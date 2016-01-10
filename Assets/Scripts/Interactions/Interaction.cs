@@ -16,16 +16,17 @@ public class Interaction : MonoBehaviour {
 			render.enabled = this.isEnabled;
 		}
 
-		collision = GetComponent<Collider>();
+		collision = GetComponentInChildren<Collider>();
 		if (collision != null) {
 			collision.enabled = this.isEnabled;
 		}
 
 		if (this.transform.childCount > 0) {
-			// Debug.Log(gameObject.name + " with " + this.transform.GetChild(0).gameObject.name);
 			child = this.transform.GetChild(0).GetComponent<Interaction>();
-			child.Hide();
-			child.Disable();
+			if (child) {
+				child.Hide();
+				child.Disable();
+			}
 		}
 	}
 

@@ -82,7 +82,7 @@ public class MouseLook : MonoBehaviour
         }
 
         if (transition.isInTransition) {
-            fieldOfView = maxFOV;
+            fieldOfView = Mathf.Clamp(maxFOV / 2f + transition.transitionTimeRatio * (maxFOV - minFOV), minFOV, maxFOV);
         } else {
             fieldOfView = Mathf.Clamp(fieldOfView - zoom, minFOV, maxFOV);
         }

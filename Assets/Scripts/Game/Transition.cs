@@ -4,6 +4,8 @@ using System.Collections;
 public class Transition : MonoBehaviour {
 
 	[HideInInspector] public bool isInTransition = false;
+	[HideInInspector] public float transitionRatio = 0f;
+	[HideInInspector] public float transitionTimeRatio = 0f;
 	Player player;
 
 	void Start () {
@@ -33,8 +35,9 @@ public class Transition : MonoBehaviour {
 
 			while (t < delay) {
 
-				float ratio = t / delay;
-				player.currentWorld.SetTransition(ratio);
+				transitionRatio = t / delay;
+				transitionTimeRatio = Mathf.Clamp(t, 0f, 1f);
+				player.currentWorld.SetTransition(transitionRatio);
 
 				t += Time.deltaTime;
 				yield return 0;
@@ -46,8 +49,10 @@ public class Transition : MonoBehaviour {
 			player.currentWorld = world;
 			player.transform.position = player.currentWorld.transform.position;
 
-			previousWorld.SetTransition(0f);
+			transitionRatio = 0f;
+			transitionTimeRatio = 0f;
 			previousWorld.CloseAll();
+			previousWorld.SetTransition(transitionRatio);
 			Shader.SetGlobalFloat("_IsUniverseTransition", 0f);
 
 			isInTransition = false;

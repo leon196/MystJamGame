@@ -53,8 +53,7 @@ public class World : MonoBehaviour {
 	public void CloseAll () {
 		for (int i = 0; i < pageArray.Length; ++i) {
 			Page page = pageArray[i];
-			bool isRootPage = page.GetComponentsInParent<Page>().Length > 1;
-			if (isRootPage) {
+			if (page.isRootPage) {
 				page.Close();
 			} else {
 				page.Reset();
