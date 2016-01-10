@@ -28,9 +28,9 @@ public class MouseLook : MonoBehaviour
 
     // equirectangle
     float angleX = 0f;
-    float angleY = 0f;
-    float zoomEqui = 0f;
-    float zoomEquiSmooth = 0f;
+    float angleY = 3.14159f;
+    float zoomEqui = 1f;
+    float zoomEquiSmooth = 1f;
 
     void Start ()
     {

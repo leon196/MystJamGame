@@ -21,7 +21,6 @@ public class Transition : MonoBehaviour {
 		if (world != null) {
 			isInTransition = true;
 			player.currentWorld.SetNextWorld(world);
-			player.currentWorld.SetHoleDirection(-Camera.main.transform.forward);
 
 			float t = 0;
 			float delay = 1f;
@@ -39,7 +38,6 @@ public class Transition : MonoBehaviour {
 			player.transform.position = player.currentWorld.transform.position;
 
 			previousWorld.SetTransition(0f);
-			previousWorld.SetNextWorld(null);
 			isInTransition = false;
 
 		} else {

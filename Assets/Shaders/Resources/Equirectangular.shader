@@ -8,13 +8,11 @@ Shader "Hidden/Equirectangular" {
             #pragma vertex vert
             #pragma fragment frag
             #pragma target 3.0
-            #include "foundation.cginc" // by i-saint from https://github.com/i-saint/RaymarchingOnUnity5
+            #include "foundation.cginc"
             #define PI 3.141592653589793
 
             sampler2D _MainTex;
-            samplerCUBE _EquirectangleTexture;
-            samplerCUBE _CubemapTexture;
-            sampler2D _CameraDepthTexture;
+            samplerCUBE _Equirectangle;
             float _InputHorizontal;
             float _InputVertical;
             float _InputDepth;
@@ -49,12 +47,8 @@ Shader "Hidden/Equirectangular" {
                 float t = _Time * 10.0;
                 normal = rotateX(normal, _InputVertical);
                 normal = rotateY(normal, _InputHorizontal);
-                float4 background = texCUBE(_EquirectangleTexture, normal);
-                float4 ui = texCUBE(_CubemapTexture, normal);
-                float mask = ui.a;// + 0.5;
-                // mask += length(uv) * 0.5;
-                mask = clamp(mask, 0.0, 1.0);
-                return lerp(background, ui, mask);
+                float4 background = texCUBE(_Equirectangle, normal);
+                return background;
             }
             ENDCG
         }

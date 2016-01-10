@@ -5,17 +5,16 @@ using System.Collections;
 public class World : MonoBehaviour {
 
 	protected Material material;
-	protected Cubemap cubemap;
+	[HideInInspector] public Cubemap cubemap;
+	[HideInInspector] public float rotation = 0f;
 	Renderer[] rendererArray;
 
 	void Awake () 
 	{
-		// Set perfect unwrapped sphere for 360 panorama (algo by Olivier Nemoz)
-		GetComponent<MeshFilter>().mesh = MeshTool.CreateSphere(1f);
-
 		material = GetComponent<Renderer>().sharedMaterial;
 		cubemap = (Cubemap)material.GetTexture("_Cube");
 		rendererArray = GetComponentsInChildren<Renderer>();
+		rotation = material.GetFloat("_Rotation");
 	}
 	
 	void Update () {
@@ -25,6 +24,8 @@ public class World : MonoBehaviour {
 	public void SetNextWorld (World world) {
 		if (world != null) {
 			material.SetTexture("_NextCube", world.cubemap);
+			material.SetVector("_HoleDirection", -Camera.main.transform.forward);
+			material.SetFloat("_RotationNext", world.rotation);
 		}
 	}
 
@@ -33,9 +34,5 @@ public class World : MonoBehaviour {
 			Material mat = rendererArray[i].material;
 			mat.SetFloat("_InterpolationRatio", ratio);
 		}
-	}
-
-	public void SetHoleDirection (Vector3 direction) {
-		material.SetVector("_HoleDirection", direction);
 	}
 }

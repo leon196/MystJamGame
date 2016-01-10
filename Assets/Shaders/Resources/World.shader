@@ -1,47 +1,63 @@
-﻿Shader "Unlit/World" {
-	Properties {
-		_MainTex ("Current World", 2D) = "white" {}
-		_NextTex ("Next World", 2D) = "white" {}
-		_InterpolationRatio ("Interpolation Ratio", Float) = 0
-	}
-	SubShader {
-		Cull front
-		Tags { "Queue"="Transparent" "IgnoreProjector"="True" "RenderType"="Transparent" }
-		LOD 100
-		Pass {
-			Blend SrcAlpha OneMinusSrcAlpha
-			CGPROGRAM
-			#pragma vertex vert
-			#pragma fragment frag
-			#include "UnityCG.cginc"
+Shader "Unlit/World" {
+   Properties {
+      _Cube ("Environment Map", Cube) = "" {}
+      _NextCube ("Next Environment Map", Cube) = "" {}
+      _Rotation ("Rotation Degree", Float) = 0
+      _InterpolationRatio ("Interpolation Ratio", Float) = 0
+      _HoleDirection ("Hole Direction", Vector) = (0, 1, 0, 1)
+   }
+   SubShader {
+      Tags { "Queue" = "Background" }
+      
+      Pass {   
+         ZWrite On
+         Cull Front
 
-			struct v2f {
-				float2 uv : TEXCOORD0;
-				float4 vertex : SV_POSITION;
-				float3 normal : NORMAL;
-			};
+         CGPROGRAM
+ 
+         #pragma vertex vert  
+         #pragma fragment frag 
+ 
+         #include "foundation.cginc"
 
-			sampler2D _MainTex;
-			sampler2D _NextTex;
-			float4 _MainTex_ST;
-			float _InterpolationRatio;
-			
-			v2f vert (appdata_full v)
-			{
-				v2f o;
-				o.normal = -v.normal;
-				o.vertex = mul(UNITY_MATRIX_MVP, v.vertex);
-				o.uv = TRANSFORM_TEX(v.texcoord.xy, _MainTex);
-				o.uv.x = 1.0 - o.uv.x;
-				return o;
-			}
-			
-			fixed4 frag (v2f i) : SV_Target
-			{
-				fixed4 col = lerp(tex2D(_MainTex, i.uv), tex2D(_NextTex, i.uv), _InterpolationRatio);
-				return col;
-			}
-			ENDCG
-		}
-	}
+         samplerCUBE _Cube;   
+         samplerCUBE _NextCube;   
+         float _InterpolationRatio;   
+         float _Rotation;   
+         float _RotationNext;   
+         float3 _HoleDirection;   
+ 
+         struct vertexInput {
+            float4 vertex : POSITION;
+         };
+         struct vertexOutput {
+            float4 pos : SV_POSITION;
+            float3 viewDir : TEXCOORD1;
+         };
+ 
+         vertexOutput vert(vertexInput input) 
+         {
+            vertexOutput output;
+ 
+            float4x4 modelMatrix = _Object2World;
+            output.viewDir = mul(modelMatrix, input.vertex).xyz - _WorldSpaceCameraPos;
+            output.pos = mul(UNITY_MATRIX_MVP, input.vertex);      
+            return output;
+         }
+ 
+         float4 frag(vertexOutput input) : COLOR
+         {
+            float ratio = dot(normalize(input.viewDir), _HoleDirection) * 0.5 + 0.5;
+            ratio = step(ratio, _InterpolationRatio);
+
+            float3 normal = input.viewDir;
+            float4 current = texCUBE(_Cube, rotateY(normal, _Rotation * PI / 180.));
+            float4 next = texCUBE(_NextCube, rotateY(normal, _RotationNext * PI / 180.));
+            
+            return lerp(current, next, ratio);
+         }
+ 
+         ENDCG
+      }
+   }
 }

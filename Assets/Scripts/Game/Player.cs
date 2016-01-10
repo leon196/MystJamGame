@@ -10,6 +10,7 @@ public class Player : MonoBehaviour {
 	Interface ui;
 	Vector3 rayDirection;
 	Transition transition;
+	Filter filter;
 
 	void Start () {
 		currentWorld = spawnWorld;
@@ -17,16 +18,22 @@ public class Player : MonoBehaviour {
 		rayDirection = new Vector3(Input.mousePosition.x, Input.mousePosition.y);
 		ui = GetComponent<Interface>();
 		transition = GetComponent<Transition>();
+		filter = GetComponentInChildren<Filter>();
 	}
 	
 	void Update () 
 	{
+		if (Input.GetKeyDown(KeyCode.H)) {
+			Shader.SetGlobalTexture("_Equirectangle", currentWorld.cubemap);
+			filter.enabled = !filter.enabled;
+		}
+
 		rayDirection.x = Input.mousePosition.x;
 		rayDirection.y = Input.mousePosition.y;
 		Ray ray = Camera.main.ScreenPointToRay(rayDirection);
 
 		if (transition.isInTransition) {
-			ui.SetCursorType(Interface.CursorType.None);
+			ui.SetCursorType(Interface.CursorType.Load);
 
 		} else if (Physics.Raycast(ray, out hit, 10f)) {
 			Interaction interaction = hit.transform.GetComponent<Interaction>();
