@@ -1,14 +1,13 @@
 using UnityEngine;
 using System.Collections;
 
+[ExecuteInEditMode]
 public class Gate : Interaction {
 
 	public Gate anotherGate;
+	public bool isAnotherUniverse = false;
 
 	void Start () {
-		if (render) {
-			render.enabled = false;
-		}
 		if (anotherGate) {
 			if (anotherGate.anotherGate == null) {
 				anotherGate.anotherGate = this;
@@ -23,6 +22,7 @@ public class Gate : Interaction {
   	if (anotherGate) {
 	  	Gizmos.color = Color.red;
 	  	Gizmos.DrawLine(transform.position, anotherGate.transform.position);
+	  	Gizmos.DrawWireSphere(transform.position, transform.localScale.x);
 	  }
   }
 }

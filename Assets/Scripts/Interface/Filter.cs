@@ -4,13 +4,22 @@ using System.Collections;
 [ExecuteInEditMode]
 public class Filter : MonoBehaviour 
 {
-	Material material;
+	Material materialUI;
+	Material materialEquirectangle;
+	public bool isEquirectangle = false;
 
 	void Awake () {
-		material = new Material( Shader.Find("Hidden/Equirectangular") );
+		materialUI = new Material( Shader.Find("Hidden/UI") );
+		materialEquirectangle = new Material( Shader.Find("Hidden/Equirectangular") );
 	}
 	
 	void OnRenderImage (RenderTexture source, RenderTexture destination) {
-		Graphics.Blit (source, destination, material);
+		
+		if (isEquirectangle == false) {
+			Graphics.Blit (source, destination, materialUI);
+
+		} else {
+			Graphics.Blit (source, destination, materialEquirectangle);
+		}
 	}
 }

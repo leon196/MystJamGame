@@ -15,6 +15,14 @@ public class Player : MonoBehaviour {
 	void Start () {
 		currentWorld = spawnWorld;
 		this.transform.position = currentWorld.transform.position;
+		// World[] worldArray = GameObject.FindObjectsOfType<World>();
+		// for (int i = 0; i < worldArray.Length; ++i) {
+		// 	World world = worldArray[i];
+		// 	if (world != currentWorld) {
+		// 		world.Hide();
+		// 	}
+		// }
+
 		rayDirection = new Vector3(Input.mousePosition.x, Input.mousePosition.y);
 		ui = GetComponent<Interface>();
 		transition = GetComponent<Transition>();
@@ -25,7 +33,7 @@ public class Player : MonoBehaviour {
 	{
 		if (Input.GetKeyDown(KeyCode.H)) {
 			Shader.SetGlobalTexture("_Equirectangle", currentWorld.cubemap);
-			filter.enabled = !filter.enabled;
+			filter.isEquirectangle = !filter.isEquirectangle;
 		}
 
 		rayDirection.x = Input.mousePosition.x;
@@ -33,7 +41,7 @@ public class Player : MonoBehaviour {
 		Ray ray = Camera.main.ScreenPointToRay(rayDirection);
 
 		if (transition.isInTransition) {
-			ui.SetCursorType(Interface.CursorType.Load);
+			ui.SetCursorType(Interface.CursorType.None);
 
 		} else if (Physics.Raycast(ray, out hit, 10f)) {
 			Interaction interaction = hit.transform.GetComponent<Interaction>();

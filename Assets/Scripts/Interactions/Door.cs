@@ -24,5 +24,12 @@ public class Door : Interaction {
 			isOpen = true;
 			render.enabled = true;
 		}
+		
+		// this.Show();
+
+		// if (child) {
+		// 	child.Show();
+		// 	child.Enable();
+		// }
 	}
 }

@@ -32,6 +32,9 @@ public class MouseLook : MonoBehaviour
     float zoomEqui = 1f;
     float zoomEquiSmooth = 1f;
 
+    // Transition
+    Transition transition;
+
     void Start ()
     {
         character = transform;
@@ -39,6 +42,7 @@ public class MouseLook : MonoBehaviour
         cameraTransform = GetComponentInChildren<Camera>().transform;
         m_CharacterTargetRot = character.localRotation;
         m_CameraTargetRot = cameraTransform.localRotation;
+        transition = GetComponent<Transition>();
     }
 
 
@@ -77,7 +81,11 @@ public class MouseLook : MonoBehaviour
             cameraTransform.localRotation = m_CameraTargetRot;
         }
 
-        fieldOfView = Mathf.Clamp(fieldOfView - zoom, minFOV, maxFOV);
+        if (transition.isInTransition) {
+            fieldOfView = maxFOV;
+        } else {
+            fieldOfView = Mathf.Clamp(fieldOfView - zoom, minFOV, maxFOV);
+        }
 
         Camera.main.fieldOfView = Mathf.Lerp(Camera.main.fieldOfView, fieldOfView, smoothTime * Time.deltaTime);
 
