@@ -45,15 +45,14 @@ public class Transition : MonoBehaviour {
 
 			// OnComplete
 
-			World previousWorld = player.currentWorld;
-			player.currentWorld = world;
-			player.transform.position = player.currentWorld.transform.position;
-
 			transitionRatio = 0f;
 			transitionTimeRatio = 0f;
-			previousWorld.CloseAll();
-			previousWorld.SetTransition(transitionRatio);
 			Shader.SetGlobalFloat("_IsUniverseTransition", 0f);
+
+			player.currentWorld.CloseAll();
+			player.currentWorld.SetTransition(transitionRatio);
+			player.currentWorld = world;
+			player.transform.position = player.currentWorld.transform.position;
 
 			isInTransition = false;
 

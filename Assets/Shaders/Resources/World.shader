@@ -1,9 +1,7 @@
 Shader "Unlit/World" {
    Properties {
       _Cube ("Environment Map", Cube) = "" {}
-      _NextCube ("Next Environment Map", Cube) = "" {}
       _Rotation ("Rotation Degree", Float) = 0
-      _InterpolationRatio ("Interpolation Ratio", Float) = 0
    }
    SubShader {
       Tags { "Queue" = "Background" }

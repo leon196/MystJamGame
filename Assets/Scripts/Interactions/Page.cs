@@ -16,13 +16,13 @@ public class Page : Interaction {
 	}
 
 	public void Close () {
-		Hide();
-		Disable();
-	}
-
-	public void Reset () {
-		Show();
-		Enable();
+		if (isRootPage == false) {
+			Hide();
+			Disable();
+		} else {
+			Show();
+			Enable();
+		}
 	}
 
   void OnDrawGizmos() {

@@ -1,18 +1,17 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-[ExecuteInEditMode]
 public class World : MonoBehaviour {
 
 	protected Material material;
-	[HideInInspector] public Cubemap cubemap;
+	[HideInInspector]public Cubemap cubemap;
 	[HideInInspector] public float rotation = 0f;
 	Renderer[] rendererArray;
 	Page[] pageArray;
 
 	void Awake () 
 	{
-		material = GetComponent<Renderer>().sharedMaterial;
+		material = GetComponent<Renderer>().material;
 		cubemap = (Cubemap)material.GetTexture("_Cube");
 		rendererArray = GetComponentsInChildren<Renderer>();
 		rotation = material.GetFloat("_Rotation");
@@ -37,10 +36,8 @@ public class World : MonoBehaviour {
 
 	public void SetNextWorld (World world) {
 		Shader.SetGlobalVector("_HoleDirection", -Camera.main.transform.forward);
-		if (world != null) {
-			material.SetTexture("_NextCube", world.cubemap);
-			material.SetFloat("_RotationNext", world.rotation);
-		}
+		material.SetTexture("_NextCube", world.cubemap);
+		material.SetFloat("_RotationNext", world.rotation);
 	}
 
 	public void SetTransition (float ratio) {
@@ -53,11 +50,7 @@ public class World : MonoBehaviour {
 	public void CloseAll () {
 		for (int i = 0; i < pageArray.Length; ++i) {
 			Page page = pageArray[i];
-			if (page.isRootPage) {
-				page.Close();
-			} else {
-				page.Reset();
-			}
+			page.Close();
 		}
 	}
 }
