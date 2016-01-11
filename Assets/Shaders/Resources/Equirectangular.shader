@@ -12,7 +12,7 @@ Shader "Hidden/Equirectangular" {
             #define PI 3.141592653589793
 
             sampler2D _MainTex;
-            samplerCUBE _Equirectangle;
+            samplerCUBE _Cubemap;
             float _InputHorizontal;
             float _InputVertical;
             float _InputDepth;
@@ -47,7 +47,7 @@ Shader "Hidden/Equirectangular" {
                 float t = _Time * 10.0;
                 normal = rotateX(normal, _InputVertical);
                 normal = rotateY(normal, _InputHorizontal);
-                float4 background = texCUBE(_Equirectangle, normal);
+                float4 background = texCUBE(_Cubemap, normal);
                 return background;
             }
             ENDCG

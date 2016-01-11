@@ -34,7 +34,7 @@ public class Player : MonoBehaviour {
 	void Update () 
 	{
 		if (Input.GetKeyDown(KeyCode.H)) {
-			Shader.SetGlobalTexture("_Equirectangle", currentWorld.cubemap);
+			Shader.SetGlobalTexture("_Cubemap", currentWorld.cubemap);
 			filter.isEquirectangle = !filter.isEquirectangle;
 		}
 
