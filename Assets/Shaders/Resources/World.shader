@@ -16,6 +16,7 @@ Shader "Unlit/World" {
          #pragma fragment frag 
  
          #include "foundation.cginc"
+         #include "Utils.cginc"
 
          samplerCUBE _Cube;   
          samplerCUBE _NextCube;   
@@ -47,7 +48,9 @@ Shader "Unlit/World" {
          {
             // Sphere transition
             float ratio = dot(normalize(input.viewDir), _HoleDirection) * 0.5 + 0.5;
+            // float ratio = dot(normalize(rotateY(input.viewDir, noiseIQ(input.pos * 0.02))), _HoleDirection) * 0.5 + 0.5;
             ratio = step(ratio, _InterpolationRatio);
+            // ratio = step(ratio, 0.5);
 
             // Select between fade in/out transition and sphere transition
             ratio = lerp(_InterpolationRatio, ratio, _IsUniverseTransition);

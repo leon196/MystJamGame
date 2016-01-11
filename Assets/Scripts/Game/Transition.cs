@@ -31,7 +31,7 @@ public class Transition : MonoBehaviour {
 			// Update
 
 			float t = 0;
-			float delay = gate.isAnotherUniverse ? 5f : 1f;
+			float delay = gate.isAnotherUniverse ? 14f : 1f;
 
 			while (t < delay) {
 

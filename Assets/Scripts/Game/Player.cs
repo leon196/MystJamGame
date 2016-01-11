@@ -11,6 +11,7 @@ public class Player : MonoBehaviour {
 	Vector3 rayDirection;
 	Transition transition;
 	Filter filter;
+	Sound sound;
 
 	void Start () {
 		currentWorld = spawnWorld;
@@ -27,6 +28,7 @@ public class Player : MonoBehaviour {
 		ui = GetComponent<Interface>();
 		transition = GetComponent<Transition>();
 		filter = GetComponentInChildren<Filter>();
+		sound = GetComponent<Sound>();
 	}
 	
 	void Update () 
@@ -41,7 +43,7 @@ public class Player : MonoBehaviour {
 		Ray ray = Camera.main.ScreenPointToRay(rayDirection);
 
 		if (transition.isInTransition) {
-			ui.SetCursorType(Interface.CursorType.None);
+			ui.SetCursorType(Interface.CursorType.Load);
 
 		} else if (Physics.Raycast(ray, out hit, 10f)) {
 			Interaction interaction = hit.transform.GetComponent<Interaction>();
@@ -53,10 +55,21 @@ public class Player : MonoBehaviour {
 				// Default Interaction
 				if (click) {
 					interaction.Interact();
+					if (interaction.audioClip != null) {
+						sound.Play(interaction.audioClip);
+					}
+					if (interaction.GetType() == typeof(Page)) {
+						sound.PlaySoundPage();
+					}
 				}
 
+				// Page
+				if (interaction.GetType() == typeof(Page)) {
+					// Page page = (Page)interaction;
+					ui.SetCursorType(Interface.CursorType.Plus);
+
 				// Door
-				if (interaction.GetType() == typeof(Door)) {
+				} else if (interaction.GetType() == typeof(Door)) {
 					Door door = (Door)interaction;
 
 					// Door Open
@@ -70,12 +83,22 @@ public class Player : MonoBehaviour {
 
 				// Gate
 				} else if (interaction.GetType() == typeof(Gate)) {
-					ui.SetCursorType(Interface.CursorType.Step);
+					
+					Gate gate = (Gate)interaction;
+					if (gate.isAnotherUniverse) {
+						ui.SetCursorType(Interface.CursorType.Lock);
+					} else {
+						ui.SetCursorType(Interface.CursorType.Step);
+					}
 
 					// Click on Gate
 					if (click) {
-						Gate gate = (Gate)interaction;
 						StartCoroutine(transition.Goto(gate));
+						if (gate.isAnotherUniverse) {
+							sound.PlaySoundPortal();
+						} else {
+							sound.PlaySoundStep();
+						}
 					}
 
 				// Default

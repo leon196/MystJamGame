@@ -19,7 +19,9 @@ public class Gate : Interaction {
 	  	Gizmos.DrawLine(transform.position, midPos);
 	  	// Gizmos.color = Color.blue;
 	  	// Gizmos.DrawLine(midPos, anotherGate.transform.position);
-	  	Gizmos.DrawWireSphere(transform.position, transform.localScale.x);
+	  } else {
+	  	Gizmos.color = Color.blue;
 	  }
+	  Gizmos.DrawWireSphere(transform.position, transform.localScale.x);
   }
 }

@@ -5,6 +5,7 @@ using System.Collections.Generic;
 public class Interaction : MonoBehaviour {
 
 	public bool isEnabled = true;
+	public AudioClip audioClip;
 	[HideInInspector] public Interaction child = null;
 	[HideInInspector] public Renderer render;
 	[HideInInspector] public Collider collision;

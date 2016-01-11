@@ -12,7 +12,8 @@ public class Interface : MonoBehaviour {
 	public Texture textureCancel;
 	public Texture textureStep;
 	public Texture textureLoad;
-	public enum CursorType { None, Look, Use, Open, Step, Plus, Minus, Cancel, Load };
+	public Texture textureLock;
+	public enum CursorType { None, Look, Use, Open, Step, Plus, Minus, Cancel, Load, Lock };
 	CursorType cursorType;
 	// float cursorScale;
 	MouseLook mouseLook;
@@ -62,6 +63,7 @@ public class Interface : MonoBehaviour {
 				case CursorType.Cancel: cursorRender.material.mainTexture = textureCancel; break;
 				case CursorType.Step: cursorRender.material.mainTexture = textureStep; break;
 				case CursorType.Load: cursorRender.material.mainTexture = textureLoad; break;
+				case CursorType.Lock: cursorRender.material.mainTexture = textureLock; break;
 			}
 		}
 	}
