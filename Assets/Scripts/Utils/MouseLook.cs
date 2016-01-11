@@ -42,7 +42,7 @@ public class MouseLook : MonoBehaviour
         cameraTransform = GetComponentInChildren<Camera>().transform;
         m_CharacterTargetRot = character.localRotation;
         m_CameraTargetRot = cameraTransform.localRotation;
-        transition = GetComponent<Transition>();
+        transition = GameObject.FindObjectOfType<Transition>();
     }
 
 

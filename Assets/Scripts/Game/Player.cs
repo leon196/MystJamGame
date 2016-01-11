@@ -6,36 +6,37 @@ public class Player : MonoBehaviour {
 	public World spawnWorld;
 	[HideInInspector] public World currentWorld;
 
+	Transition transition;
+	FilterUI filterUI;
+	FilterPlanet filterPlanet;
+	FilterEquirectangle filterEquirectangle;
+
 	RaycastHit hit;
 	Interface ui;
 	Vector3 rayDirection;
-	Transition transition;
-	Filter filter;
+	
 	Sound sound;
 
-	void Start () {
+	void Start () 
+	{
 		currentWorld = spawnWorld;
 		this.transform.position = currentWorld.transform.position;
-		// World[] worldArray = GameObject.FindObjectsOfType<World>();
-		// for (int i = 0; i < worldArray.Length; ++i) {
-		// 	World world = worldArray[i];
-		// 	if (world != currentWorld) {
-		// 		world.Hide();
-		// 	}
-		// }
-
 		rayDirection = new Vector3(Input.mousePosition.x, Input.mousePosition.y);
+
 		ui = GetComponent<Interface>();
-		transition = GetComponent<Transition>();
-		filter = GetComponentInChildren<Filter>();
-		sound = GetComponent<Sound>();
+		filterUI = GetComponentInChildren<FilterUI>();
+		filterPlanet = GetComponentInChildren<FilterPlanet>();
+		filterEquirectangle = GetComponentInChildren<FilterEquirectangle>();
+		
+		transition = GameObject.FindObjectOfType<Transition>();
+		sound = GameObject.FindObjectOfType<Sound>();
 	}
 	
 	void Update () 
 	{
 		if (Input.GetKeyDown(KeyCode.H)) {
 			Shader.SetGlobalTexture("_Cubemap", currentWorld.cubemap);
-			filter.isEquirectangle = !filter.isEquirectangle;
+			filterEquirectangle.enabled = !filterEquirectangle.enabled;
 		}
 
 		rayDirection.x = Input.mousePosition.x;

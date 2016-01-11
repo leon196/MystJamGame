@@ -9,7 +9,43 @@ public class Transition : MonoBehaviour {
 	Player player;
 
 	void Start () {
-		player = GetComponent<Player>();
+		player = GameObject.FindObjectOfType<Player>();
+	}
+
+	public IEnumerator FallOn (World world) {
+		if (world) {
+
+			// Start
+
+			isInTransition = true;
+
+			// Update
+
+			float t = 0;
+			float delay = 10f;
+
+			while (t < delay) {
+
+				transitionRatio = t / delay;
+				transitionTimeRatio = Mathf.Clamp(t, 0f, 1f);
+
+				t += Time.deltaTime;
+				yield return 0;
+			}
+
+			// OnComplete
+
+			transitionRatio = 0f;
+			transitionTimeRatio = 0f;
+
+			player.currentWorld = world;
+			player.transform.position = player.currentWorld.transform.position;
+
+			isInTransition = false;
+
+		} else {
+			yield return 0;
+		}
 	}
 
 	public IEnumerator Goto (Gate gate) {

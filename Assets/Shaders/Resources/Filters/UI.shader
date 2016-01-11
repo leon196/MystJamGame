@@ -8,9 +8,9 @@ Shader "Hidden/UI" {
 			CGPROGRAM
 			#pragma vertex vert_img
 			#pragma fragment frag
-			#include "foundation.cginc"
-			#include "Dither.cginc"
-			#include "Utils.cginc"
+			#include "../Utils/foundation.cginc"
+			#include "../Utils/Dither.cginc"
+			#include "../Utils/Utils.cginc"
 			
 			sampler2D _MainTex;
 			sampler2D _UITexture;

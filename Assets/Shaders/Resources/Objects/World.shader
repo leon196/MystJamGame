@@ -15,8 +15,8 @@ Shader "Unlit/World" {
          #pragma vertex vert  
          #pragma fragment frag 
  
-         #include "foundation.cginc"
-         #include "Utils.cginc"
+         #include "../Utils/foundation.cginc"
+         #include "../Utils/Utils.cginc"
 
          samplerCUBE _Cube;   
          samplerCUBE _NextCube;   

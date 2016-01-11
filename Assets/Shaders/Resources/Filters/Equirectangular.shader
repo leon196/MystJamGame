@@ -8,7 +8,7 @@ Shader "Hidden/Equirectangular" {
             #pragma vertex vert
             #pragma fragment frag
             #pragma target 3.0
-            #include "foundation.cginc"
+            #include "../Utils/foundation.cginc"
             #define PI 3.141592653589793
 
             sampler2D _MainTex;
@@ -38,7 +38,6 @@ Shader "Hidden/Equirectangular" {
             {
                 float2 uv = i.uv;
                 uv *= _InputDepth;
-                // uv = fmod(abs(uv + _Time), 1.0);
                 float cosy = cos(uv.y);
                 float3 normal = float3(0,0,0);
                 normal.x = cos(uv.x) * cosy;
