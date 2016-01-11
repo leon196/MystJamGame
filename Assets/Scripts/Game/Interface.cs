@@ -1,10 +1,14 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 public class Interface : MonoBehaviour {
 
 	Renderer cursorRender;
-	Texture2D textureNone;
+
+	public enum CursorType { None, Look, Use, Open, Step, Plus, Minus, Cancel, Load, Lock };
+	CursorType cursorType;
+
 	public Texture textureLook;
 	public Texture textureUse;
 	public Texture texturePlus;
@@ -13,22 +17,16 @@ public class Interface : MonoBehaviour {
 	public Texture textureStep;
 	public Texture textureLoad;
 	public Texture textureLock;
-	public enum CursorType { None, Look, Use, Open, Step, Plus, Minus, Cancel, Load, Lock };
-	CursorType cursorType;
-	// float cursorScale;
+	private Texture2D textureNone;
+
 	MouseLook mouseLook;
 	public Camera cameraUI;
 	public Camera cameraItems;
 	RenderTexture textureUI;
 	RenderTexture textureItems;
 
-	void Start () {
-		textureNone = new Texture2D(1, 1);
-		textureNone.SetPixel(0, 0, new Color(1,0,0,0));
-    textureNone.Apply();
-		cursorRender = GetComponentInChildren<Renderer>();
-		cursorRender.material.mainTexture = textureNone;
-		// cursorScale = cursorRender.transform.localScale.x;
+	void Start () 
+	{
 		mouseLook = GetComponent<MouseLook>();
 		
 		textureUI = new RenderTexture((int)Screen.width, (int)Screen.height, 24, RenderTextureFormat.ARGB32);
@@ -40,15 +38,33 @@ public class Interface : MonoBehaviour {
 		textureItems.Create();
 		cameraItems.targetTexture = textureItems;
 		Shader.SetGlobalTexture("_ItemsTexture", textureItems);
+		
+		textureNone = new Texture2D(1, 1);
+		textureNone.SetPixel(0, 0, new Color(1,0,0,0));
+    textureNone.Apply();
+
+		cursorRender = GetComponentInChildren<Renderer>();
+		cursorRender.material.mainTexture = textureNone;
+
+		Gate[] gateArray = GameObject.FindObjectsOfType<Gate>();
+		List<Vector3> positionList = new List<Vector3>();
+		for (int i = 0; i < gateArray.Length; ++i) {
+			Gate gate = gateArray[i];
+			if (gate.anotherGate != null && gate.GetComponent<Page>() == null) {
+				positionList.Add(gate.transform.position);
+			}
+		}
+		Vector3[] positionArray = positionList.ToArray();
+		GameObject.FindObjectOfType<ParticleCloud>().SetPositionArray(positionArray);
 	}
 
-	void Update () {
+	void Update () 
+	{
 		float fovRatio = (Camera.main.fieldOfView - mouseLook.minFOV) / mouseLook.maxFOV;
 		fovRatio = 1.5f * Mathf.Clamp(fovRatio, 0.05f, 1f);
 		if (cameraItems) {
 			cameraItems.fieldOfView = Camera.main.fieldOfView;
 		}
-		// cursorRender.transform.localScale = cursorScale * fovRatio * Vector3.one;
 	}
 	
 	public void SetCursorType (CursorType type) {
