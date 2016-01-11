@@ -15,8 +15,11 @@ public class Gate : Interaction {
   void OnDrawGizmos() {
   	if (anotherGate) {
 	  	Gizmos.color = Color.red;
-	  	Vector3 midPos = Vector3.Lerp(transform.position, anotherGate.transform.position, 0.5f);
-	  	Gizmos.DrawLine(transform.position, midPos);
+	  	if (anotherGate.anotherGate) {
+	  		Gizmos.DrawLine(transform.position, Vector3.Lerp(transform.position, anotherGate.transform.position, 0.5f));
+  		} else {
+	  		Gizmos.DrawLine(transform.position, anotherGate.transform.position);
+  		}
 	  	// Gizmos.color = Color.blue;
 	  	// Gizmos.DrawLine(midPos, anotherGate.transform.position);
 	  } else {
