@@ -34,11 +34,9 @@ public class World : MonoBehaviour {
 		}
 	}
 
-	public void SetNextWorld (World world) {
+	public void SetupMaterial (World world) {
 		material.SetTexture("_NextCube", world.cubemap);
 		material.SetFloat("_RotationNext", world.rotation);
-		Shader.SetGlobalVector("_HoleDirection", -Camera.main.transform.forward);
-		Shader.SetGlobalTexture("_Cubemap", world.cubemap);
 	}
 
 	public void CloseAll () {

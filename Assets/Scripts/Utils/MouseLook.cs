@@ -81,8 +81,8 @@ public class MouseLook : MonoBehaviour
             cameraTransform.localRotation = m_CameraTargetRot;
         }
 
-        if (transition.isInTransition) {
-            fieldOfView = Mathf.Clamp(maxFOV / 2f + transition.transitionTimeRatio * (maxFOV - minFOV), minFOV, maxFOV);
+        if (transition.isInTransition && transition.transitionTime < 1f) {
+            fieldOfView = Mathf.Clamp(maxFOV / 2f + transition.transitionTime * (maxFOV - minFOV), minFOV, maxFOV);
         } else {
             fieldOfView = Mathf.Clamp(fieldOfView - zoom, minFOV, maxFOV);
         }

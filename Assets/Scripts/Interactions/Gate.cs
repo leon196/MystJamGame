@@ -4,7 +4,8 @@ using System.Collections;
 public class Gate : Interaction {
 
 	public Gate anotherGate;
-	public bool isAnotherUniverse = false;
+	public enum TransitionType { Fade, Sphere, Fall };
+	public TransitionType transitionType = TransitionType.Fade;
 
 	void Start () {
 	}

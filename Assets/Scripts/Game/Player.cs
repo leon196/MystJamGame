@@ -6,15 +6,11 @@ public class Player : MonoBehaviour {
 	public World spawnWorld;
 	[HideInInspector] public World currentWorld;
 
-	Transition transition;
-	FilterUI filterUI;
-	FilterPlanet filterPlanet;
-	FilterEquirectangle filterEquirectangle;
-
 	RaycastHit hit;
 	Interface ui;
 	Vector3 rayDirection;
 	
+	Transition transition;
 	Sound sound;
 
 	void Start () 
@@ -24,9 +20,6 @@ public class Player : MonoBehaviour {
 		rayDirection = new Vector3(Input.mousePosition.x, Input.mousePosition.y);
 
 		ui = GetComponent<Interface>();
-		filterUI = GetComponentInChildren<FilterUI>();
-		filterPlanet = GetComponentInChildren<FilterPlanet>();
-		filterEquirectangle = GetComponentInChildren<FilterEquirectangle>();
 		
 		transition = GameObject.FindObjectOfType<Transition>();
 		sound = GameObject.FindObjectOfType<Sound>();
@@ -34,11 +27,6 @@ public class Player : MonoBehaviour {
 	
 	void Update () 
 	{
-		if (Input.GetKeyDown(KeyCode.H)) {
-			Shader.SetGlobalTexture("_Cubemap", currentWorld.cubemap);
-			filterEquirectangle.enabled = !filterEquirectangle.enabled;
-		}
-
 		rayDirection.x = Input.mousePosition.x;
 		rayDirection.y = Input.mousePosition.y;
 		Ray ray = Camera.main.ScreenPointToRay(rayDirection);
@@ -56,9 +44,6 @@ public class Player : MonoBehaviour {
 				// Default Interaction
 				if (click) {
 					interaction.Interact();
-					if (interaction.audioClip != null) {
-						sound.Play(interaction.audioClip);
-					}
 					if (interaction.GetType() == typeof(Page)) {
 						sound.PlaySoundPage();
 					}
@@ -86,7 +71,7 @@ public class Player : MonoBehaviour {
 				} else if (interaction.GetType() == typeof(Gate)) {
 					
 					Gate gate = (Gate)interaction;
-					if (gate.isAnotherUniverse) {
+					if (gate.transitionType == Gate.TransitionType.Sphere) {
 						ui.SetCursorType(Interface.CursorType.Lock);
 					} else {
 						ui.SetCursorType(Interface.CursorType.Step);
@@ -94,12 +79,29 @@ public class Player : MonoBehaviour {
 
 					// Click on Gate
 					if (click) {
+
 						StartCoroutine(transition.Goto(gate));
-						if (gate.isAnotherUniverse) {
+
+						if (gate.transitionType == Gate.TransitionType.Sphere) {
 							sound.PlaySoundPortal();
 						} else {
 							sound.PlaySoundStep();
 						}
+					}
+
+				// Portal
+				} else if (interaction.GetType() == typeof(Portal)) {
+
+					Portal portal = (Portal)interaction;
+					if (portal.transitionType == Gate.TransitionType.Sphere) {
+						ui.SetCursorType(Interface.CursorType.Lock);
+					} else {
+						ui.SetCursorType(Interface.CursorType.Step);
+					}
+
+					// Click on Portal
+					if (click) {
+						StartCoroutine(transition.Fall(portal));
 					}
 
 				// Default
