@@ -41,13 +41,6 @@ public class World : MonoBehaviour {
 		Shader.SetGlobalTexture("_Cubemap", world.cubemap);
 	}
 
-	public void SetTransition (float ratio) {
-		for (int i = 0; i < rendererArray.Length; ++i) {
-			Material mat = rendererArray[i].material;
-			mat.SetFloat("_InterpolationRatio", ratio);
-		}
-	}
-
 	public void CloseAll () {
 		for (int i = 0; i < pageArray.Length; ++i) {
 			Page page = pageArray[i];

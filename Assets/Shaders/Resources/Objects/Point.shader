@@ -1,24 +1,17 @@
-Shader "Unlit/CursorShadow"
-{
-	Properties
-	{
-		_MainTex ("Texture", 2D) = "white" {}
-		_Color ("Color", Color) = (1,1,1,1)
+Shader "Unlit/Point" {
+	Properties {
+		_MainTex ("Current World", 2D) = "white" {}
 	}
-	SubShader
-	{
+	SubShader {
 		ZWrite off
 		Cull off
 		Tags { "Queue"="Transparent" "IgnoreProjector"="True" "RenderType"="Transparent" }
 		LOD 100
-
-		Pass
-		{
+		Pass {
 			Blend SrcAlpha OneMinusSrcAlpha
 			CGPROGRAM
 			#pragma vertex vert
 			#pragma fragment frag
-			
 			#include "UnityCG.cginc"
 
 			struct appdata
@@ -27,21 +20,24 @@ Shader "Unlit/CursorShadow"
 				float2 uv : TEXCOORD0;
 			};
 
-			struct v2f
-			{
+			struct v2f {
 				float2 uv : TEXCOORD0;
 				float4 pos : SV_POSITION;
+        float3 viewDir : TEXCOORD1;
 			};
 
 			sampler2D _MainTex;
 			float4 _MainTex_ST;
-			fixed4 _Color;
+			float3 _HoleDirection;
+			float _IsUniverseTransition;
+			float _InterpolationRatio;
  
 			v2f vert(appdata input) 
 			{
 				v2f output;
 
 				float4x4 modelMatrix = _Object2World;
+				output.viewDir = mul(modelMatrix, input.vertex).xyz - _WorldSpaceCameraPos;
 				output.pos = mul(UNITY_MATRIX_MVP, input.vertex);      
 				output.uv = input.uv;
 				return output;
@@ -49,7 +45,15 @@ Shader "Unlit/CursorShadow"
 			
 			fixed4 frag (v2f i) : SV_Target
 			{
-				fixed4 col = tex2D(_MainTex, i.uv) * _Color;
+        // Sphere transition
+        float ratio = dot(normalize(i.viewDir), _HoleDirection) * 0.5 + 0.5;
+        ratio = step(ratio, _InterpolationRatio);
+
+        // Select between fade in/out transition and sphere transition
+        ratio = lerp(_InterpolationRatio, ratio, _IsUniverseTransition);
+
+				fixed4 col = tex2D(_MainTex, i.uv);
+				col.a *= 1. - ratio;
 				return col;
 			}
 			ENDCG

@@ -62,6 +62,7 @@ public class Transition : MonoBehaviour {
 
 			isInTransition = true;
 			player.currentWorld.SetNextWorld(world);
+			Shader.SetGlobalFloat("_InterpolationRatio", 0f);
 			Shader.SetGlobalFloat("_IsUniverseTransition", gate.isAnotherUniverse ? 1f : 0f);
 
 			// Update
@@ -73,7 +74,7 @@ public class Transition : MonoBehaviour {
 
 				transitionRatio = t / delay;
 				transitionTimeRatio = Mathf.Clamp(t, 0f, 1f);
-				player.currentWorld.SetTransition(transitionRatio);
+				Shader.SetGlobalFloat("_InterpolationRatio", transitionRatio);
 
 				t += Time.deltaTime;
 				yield return 0;
@@ -83,10 +84,10 @@ public class Transition : MonoBehaviour {
 
 			transitionRatio = 0f;
 			transitionTimeRatio = 0f;
+			Shader.SetGlobalFloat("_InterpolationRatio", 0f);
 			Shader.SetGlobalFloat("_IsUniverseTransition", 0f);
 
 			player.currentWorld.CloseAll();
-			player.currentWorld.SetTransition(transitionRatio);
 			player.currentWorld = world;
 			player.transform.position = player.currentWorld.transform.position;
 
