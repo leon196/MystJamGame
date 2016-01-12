@@ -29,8 +29,8 @@ Shader "Hidden/Stereographic" {
                 float ratio = _InterpolationRatio;
                 // float ratio = sin(_Time * 5.0) * 0.5 + 0.5;
                 // float ratio = 1.;//fmod(_Time * 5.0, 1.0);
-                float t = smoothstep(0.1, 0.75, 1.0 - ratio);
-                float scale = 0.65 + easeInCirc(t, 0.0, 1.0, 1.0) * 40.0;
+                float t = 1.0 - smoothstep(0.6, 0.9, ratio);
+                float scale = 0.65 + easeInCirc(t, 0.0, 1.0, 1.0) * 10.0;//t * 5.0;//
                 // float scale = 1.0 + _InputDepth * 4.0;
 
                 float2 pnt = (i.uv - float2(.5, .5)) * scale;
@@ -41,7 +41,7 @@ Shader "Hidden/Stereographic" {
                 float3 sphere_pnt = float3(2. * pnt, x2y2 - 1.) / (x2y2 + 1.);
 
                 sphere_pnt = rotateY(sphere_pnt, PI);
-                float rX = smoothstep(0.6, .8, ratio);
+                float rX = smoothstep(0.6, .9, ratio);
                 sphere_pnt = rotateX(sphere_pnt, rX * PI * 0.5);
                 // sphere_pnt = rotateY(sphere_pnt, _InputHorizontal);
                 // sphere_pnt = rotateX(sphere_pnt, -_InputVertical);
@@ -50,14 +50,13 @@ Shader "Hidden/Stereographic" {
                 float lon = atan2(sphere_pnt.y, sphere_pnt.x) + PI;
                 float lat = acos(sphere_pnt.z / r);
 
-                float rot = _Time * 4.0;
+                float rot = (1.0 - smoothstep(0.0, 0.95, ratio)) * 4.0;
                 float2 uv = fmod(abs(float2(lon + rot, lat) / rads), 1.0);
-                uv.x = 1.0 - uv.x;
 
                 fixed4 planet = tex2D(_Equirectangle, uv);
                 fixed4 background = tex2D(_MainTex, i.uv);
 
-                float a = smoothstep(0.0, 0.25, ratio) - smoothstep(0.75, 1.0, ratio);
+                float a = smoothstep(0.0, 0.25, ratio) - smoothstep(0.85, 1.0, ratio);
                 fixed4 color = lerp(background, planet, a);
 
                 return color;
