@@ -17,7 +17,8 @@
 			#pragma vertex vert
 			#pragma fragment frag
 			
-			#include "UnityCG.cginc"
+			#include "../Utils/foundation.cginc"
+			#include "../Utils/Utils.cginc"
 
 			struct appdata
 			{
@@ -56,7 +57,7 @@
         ratio = step(ratio, _InterpolationRatio);
 
         // Select between fade in/out transition and sphere transition
-        ratio = lerp(_InterpolationRatio, ratio, _IsUniverseTransition);
+        ratio = lerp(dentDeScie(_InterpolationRatio), ratio, _IsUniverseTransition);
 
 				fixed4 col = tex2D(_MainTex, i.uv);
 				col.a *= 1. - ratio;

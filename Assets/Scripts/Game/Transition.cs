@@ -5,6 +5,7 @@ public class Transition : MonoBehaviour {
 
 	Player player;
 	MouseLook mouseLook;
+	Interface ui;
 
 	FilterUI filterUI;
 	FilterPlanet filterPlanet;
@@ -18,6 +19,7 @@ public class Transition : MonoBehaviour {
 	{
 		player = GameObject.FindObjectOfType<Player>();
 		mouseLook = GameObject.FindObjectOfType<MouseLook>();
+		ui = GameObject.FindObjectOfType<Interface>();
 
 		filterUI = GameObject.FindObjectOfType<FilterUI>();
 		filterPlanet = GameObject.FindObjectOfType<FilterPlanet>();
@@ -57,6 +59,10 @@ public class Transition : MonoBehaviour {
 			bool isUniverseTransition = gate.transitionType == Gate.TransitionType.Sphere;
 			Shader.SetGlobalFloat("_IsUniverseTransition", isUniverseTransition ? 1f : 0f);
 
+			ui.cameraItemsTransition.transform.position = world.transform.position;
+			ui.cameraItemsTransition.transform.rotation = Camera.main.transform.rotation;
+			ui.cameraItemsTransition.fieldOfView = Camera.main.fieldOfView;
+
 			// Update
 
 			transitionTime = 0;
@@ -66,6 +72,8 @@ public class Transition : MonoBehaviour {
 
 				transitionRatio = transitionTime / delay;
 				Shader.SetGlobalFloat("_InterpolationRatio", transitionRatio);
+				ui.cameraItemsTransition.transform.rotation = Camera.main.transform.rotation;
+				ui.cameraItemsTransition.fieldOfView = Camera.main.fieldOfView;
 
 				transitionTime += Time.deltaTime;
 				yield return 0;
@@ -113,6 +121,10 @@ public class Transition : MonoBehaviour {
 				Shader.SetGlobalFloat("_IsUniverseTransition", 0f);
 				Shader.SetGlobalTexture("_Equirectangle", portal.equirectangle);
 
+				ui.cameraItemsTransition.transform.position = world.transform.position;
+				ui.cameraItemsTransition.transform.rotation = Camera.main.transform.rotation;
+				ui.cameraItemsTransition.fieldOfView = Camera.main.fieldOfView;
+
 				// Update
 
 				transitionTime = 0;
@@ -122,6 +134,8 @@ public class Transition : MonoBehaviour {
 
 					transitionRatio = transitionTime / delay;
 					Shader.SetGlobalFloat("_InterpolationRatio", transitionRatio);
+					ui.cameraItemsTransition.transform.rotation = Camera.main.transform.rotation;
+					ui.cameraItemsTransition.fieldOfView = Camera.main.fieldOfView;
 
 					transitionTime += Time.deltaTime;
 					yield return 0;

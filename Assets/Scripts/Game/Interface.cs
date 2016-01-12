@@ -22,8 +22,10 @@ public class Interface : MonoBehaviour {
 	MouseLook mouseLook;
 	public Camera cameraUI;
 	public Camera cameraItems;
+	public Camera cameraItemsTransition;
 	RenderTexture textureUI;
 	RenderTexture textureItems;
+	RenderTexture textureItemsTransition;
 
 	void Start () 
 	{
@@ -38,6 +40,11 @@ public class Interface : MonoBehaviour {
 		textureItems.Create();
 		cameraItems.targetTexture = textureItems;
 		Shader.SetGlobalTexture("_ItemsTexture", textureItems);
+
+		textureItemsTransition = new RenderTexture((int)Screen.width, (int)Screen.height, 24, RenderTextureFormat.ARGB32);
+		textureItemsTransition.Create();
+		cameraItemsTransition.targetTexture = textureItemsTransition;
+		Shader.SetGlobalTexture("_ItemsNextTexture", textureItemsTransition);
 		
 		textureNone = new Texture2D(1, 1);
 		textureNone.SetPixel(0, 0, new Color(1,0,0,0));
