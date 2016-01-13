@@ -24,7 +24,7 @@ public class MouseLook : MonoBehaviour
     private Quaternion m_CharacterTargetRot;
     private Quaternion m_CameraTargetRot;
     private bool m_cursorIsLocked = true;
-    private float fieldOfView;
+    [HideInInspector] public float fieldOfView;
 
     // equirectangle
     float angleX = 0f;
@@ -83,6 +83,12 @@ public class MouseLook : MonoBehaviour
 
         if (transition.isInTransition && transition.transitionTime < 1f) {
             fieldOfView = transition.transitionTime * maxFOV;
+        } else if (Input.GetMouseButtonDown(2)) {
+            if (fieldOfView > maxFOV / 2f) {
+                fieldOfView = minFOV;
+            } else {
+                fieldOfView = maxFOV;
+            }
         } else {
             fieldOfView = Mathf.Clamp(fieldOfView - zoom, minFOV, maxFOV);
         }
@@ -90,6 +96,10 @@ public class MouseLook : MonoBehaviour
         Camera.main.fieldOfView = Mathf.Lerp(Camera.main.fieldOfView, fieldOfView, smoothTime * Time.deltaTime);
 
         UpdateCursorLock();
+    }
+
+    public void Zoom (float value) {
+        fieldOfView = Mathf.Clamp(value, minFOV, maxFOV);
     }
 
     public void SetCursorLock(bool value)

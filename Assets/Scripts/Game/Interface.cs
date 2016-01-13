@@ -6,7 +6,7 @@ public class Interface : MonoBehaviour {
 
 	Renderer cursorRender;
 
-	public enum CursorType { None, Look, Use, Open, Step, Plus, Minus, Cancel, Load, Lock };
+	public enum CursorType { None, Look, Use, Open, Step, Plus, Minus, Cancel, Load, Lock, Portal };
 	CursorType cursorType;
 
 	public Texture textureLook;
@@ -17,6 +17,7 @@ public class Interface : MonoBehaviour {
 	public Texture textureStep;
 	public Texture textureLoad;
 	public Texture textureLock;
+	public Texture texturePortal;
 	private Texture2D textureNone;
 
 	MouseLook mouseLook;
@@ -87,6 +88,7 @@ public class Interface : MonoBehaviour {
 				case CursorType.Step: cursorRender.material.mainTexture = textureStep; break;
 				case CursorType.Load: cursorRender.material.mainTexture = textureLoad; break;
 				case CursorType.Lock: cursorRender.material.mainTexture = textureLock; break;
+				case CursorType.Portal: cursorRender.material.mainTexture = texturePortal; break;
 			}
 		}
 	}

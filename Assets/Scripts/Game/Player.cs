@@ -10,6 +10,7 @@ public class Player : MonoBehaviour {
 	Interface ui;
 	Vector3 rayDirection;
 	
+	MouseLook mouseLook;
 	Transition transition;
 	Sound sound;
 
@@ -22,6 +23,7 @@ public class Player : MonoBehaviour {
 		ui = GetComponent<Interface>();
 		
 		transition = GameObject.FindObjectOfType<Transition>();
+		mouseLook = GameObject.FindObjectOfType<MouseLook>();
 		sound = GameObject.FindObjectOfType<Sound>();
 	}
 	
@@ -41,73 +43,95 @@ public class Player : MonoBehaviour {
 
 				bool click = Input.GetMouseButtonDown(0);
 
-				// Default Interaction
-				if (click) {
-					interaction.Interact();
+				// Close enough of interaction
+				// if (Camera.main.fieldOfView < mouseLook.maxFOV / 2f) {
+
+					// Page
 					if (interaction.GetType() == typeof(Page)) {
-						sound.PlaySoundPage();
-					}
-				}
-
-				// Page
-				if (interaction.GetType() == typeof(Page)) {
-					// Page page = (Page)interaction;
-					ui.SetCursorType(Interface.CursorType.Plus);
-
-				// Door
-				} else if (interaction.GetType() == typeof(Door)) {
-					Door door = (Door)interaction;
-
-					// Door Open
-					if (door.isOpen) {
-						ui.SetCursorType(Interface.CursorType.Use);
-
-					// Door Close
-					}	else {
-						ui.SetCursorType(Interface.CursorType.Plus);
-					}
-
-				// Gate
-				} else if (interaction.GetType() == typeof(Gate)) {
-					
-					Gate gate = (Gate)interaction;
-					if (gate.transitionType == Gate.TransitionType.Sphere) {
-						ui.SetCursorType(Interface.CursorType.Lock);
-					} else {
-						ui.SetCursorType(Interface.CursorType.Step);
-					}
-
-					// Click on Gate
-					if (click) {
-
-						StartCoroutine(transition.Goto(gate));
-
-						if (gate.transitionType == Gate.TransitionType.Sphere) {
-							sound.PlaySoundPortal();
+						// Close enough of page
+						if (Camera.main.fieldOfView < mouseLook.maxFOV / 2f) {
+							ui.SetCursorType(Interface.CursorType.Use);
+							// Click on page
+							if (click) {
+								interaction.Interact();
+								sound.PlaySoundPage();
+							}
+						// Not close enough of page
 						} else {
-							sound.PlaySoundStep();
+							ui.SetCursorType(Interface.CursorType.Plus);
+							// Zoom
+							if (click) {
+								mouseLook.Zoom(40f);
+							}
 						}
-					}
 
-				// Portal
-				} else if (interaction.GetType() == typeof(Portal)) {
+					// Gate
+					} else if (interaction.GetType() == typeof(Gate)) {
+						Gate gate = (Gate)interaction;
 
-					Portal portal = (Portal)interaction;
-					if (portal.transitionType == Gate.TransitionType.Sphere) {
-						ui.SetCursorType(Interface.CursorType.Lock);
+						// Not close enough of gate
+						if (gate.transitionType == Gate.TransitionType.Sphere && Camera.main.fieldOfView > mouseLook.maxFOV / 2f) {
+							ui.SetCursorType(Interface.CursorType.Plus);
+							if (click) { 
+								mouseLook.Zoom(40f); 
+							}
+
+						// Close enough of gate
+						} else {
+							// Sphere transition
+							if (gate.transitionType == Gate.TransitionType.Sphere) {
+								ui.SetCursorType(Interface.CursorType.Lock);
+							} else {
+								ui.SetCursorType(Interface.CursorType.Step);
+							}
+
+							// Click on Gate
+							if (click) {
+								StartCoroutine(transition.Goto(gate));
+								// Sound
+								if (gate.transitionType == Gate.TransitionType.Sphere) {
+									sound.PlaySoundPortal();
+								} else {
+									sound.PlaySoundStep();
+								}
+							}
+						} 
+
+					// Portal
+					} else if (interaction.GetType() == typeof(Portal)) {
+
+						// Close enough of portal
+						if (Camera.main.fieldOfView < mouseLook.maxFOV / 2f) {
+							Portal portal = (Portal)interaction;
+							if (portal.transitionType == Gate.TransitionType.Sphere) {
+								ui.SetCursorType(Interface.CursorType.Lock);
+							} else {
+								ui.SetCursorType(Interface.CursorType.Portal);
+							}
+							// Click on Portal
+							if (click) {
+								StartCoroutine(transition.Fall(portal));
+							}
+						// Not close enough of portal
+						} else {
+							if (click) {
+								mouseLook.Zoom(30f);
+							}
+							ui.SetCursorType(Interface.CursorType.Plus);
+						}
+					// Default
 					} else {
-						ui.SetCursorType(Interface.CursorType.Step);
+						ui.SetCursorType(Interface.CursorType.Use);
 					}
 
-					// Click on Portal
-					if (click) {
-						StartCoroutine(transition.Fall(portal));
-					}
-
-				// Default
-				} else {
-					ui.SetCursorType(Interface.CursorType.Use);
-				}
+				// Not close enough of interaction
+				// } else {
+				// 	ui.SetCursorType(Interface.CursorType.Look);
+					// Click to Zoom
+				// 	if (click) {
+				// 		mouseLook.Zoom();
+				// 	}
+				// }
 
 			// No interaction
 			} else {
