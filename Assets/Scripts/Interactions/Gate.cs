@@ -26,6 +26,6 @@ public class Gate : Interaction {
 	  } else {
 	  	Gizmos.color = Color.blue;
 	  }
-	  Gizmos.DrawWireSphere(transform.position, transform.localScale.x);
+	  Gizmos.DrawWireSphere(transform.position, transform.localScale.x * 0.2f);
   }
 }

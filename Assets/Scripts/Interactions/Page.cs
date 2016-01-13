@@ -4,7 +4,15 @@ using System.Collections;
 public class Page : Interaction {
 
 	public bool isRootPage = false;
-	public Page nextPage;
+	public Interaction nextPage;
+
+	void Start ()
+	{
+		if (!isRootPage) {
+			Hide();
+			Disable();
+		}
+	}
 
 	public override void Interact () {
 		Disable();

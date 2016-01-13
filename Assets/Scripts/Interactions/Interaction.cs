@@ -5,12 +5,15 @@ using System.Collections.Generic;
 public class Interaction : MonoBehaviour {
 
 	public bool isEnabled = true;
+	Gate[] gateArray;
 	[HideInInspector] public Interaction child = null;
 	[HideInInspector] public Renderer render;
 	[HideInInspector] public Collider collision;
 
 	void Awake () 
 	{
+		gateArray = GetComponentsInChildren<Gate>();
+
 		render = GetComponent<Renderer>();
 		if (render != null) {
 			render.enabled = this.isEnabled;
@@ -44,12 +47,18 @@ public class Interaction : MonoBehaviour {
 		if (collision != null) {
 			collision.enabled = true;
 		}
+		for (int i = 0; i < gateArray.Length; ++i) {
+			gateArray[i].isEnabled = true;
+		}
 	}
 
 	public void Disable () {
 		this.isEnabled = false;
 		if (collision != null) {
 			collision.enabled = false;
+		}
+		for (int i = 0; i < gateArray.Length; ++i) {
+			gateArray[i].isEnabled = false;
 		}
 	}
 

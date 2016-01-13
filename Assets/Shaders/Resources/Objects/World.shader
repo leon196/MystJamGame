@@ -28,9 +28,11 @@ Shader "Unlit/World" {
  
          struct vertexInput {
             float4 vertex : POSITION;
+            float3 normal : NORMAL;
          };
          struct vertexOutput {
             float4 pos : SV_POSITION;
+            float3 normal : NORMAL;
             float3 viewDir : TEXCOORD1;
          };
  
@@ -41,6 +43,7 @@ Shader "Unlit/World" {
             float4x4 modelMatrix = _Object2World;
             output.viewDir = mul(modelMatrix, input.vertex).xyz - _WorldSpaceCameraPos;
             output.pos = mul(UNITY_MATRIX_MVP, input.vertex);      
+            output.normal = input.normal;
             return output;
          }
  
@@ -55,7 +58,7 @@ Shader "Unlit/World" {
             // Select between fade in/out transition and sphere transition
             ratio = lerp(_InterpolationRatio, ratio, _IsUniverseTransition);
 
-            float3 normal = input.viewDir;
+            float3 normal = input.normal;//input.viewDir;
             float4 current = texCUBE(_Cube, rotateY(normal, _Rotation * PI / 180.));
             float4 next = texCUBE(_NextCube, rotateY(normal, _RotationNext * PI / 180.));
 

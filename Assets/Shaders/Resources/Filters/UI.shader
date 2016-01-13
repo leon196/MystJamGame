@@ -22,7 +22,7 @@ Shader "Hidden/UI" {
 				float2 uv = i.uv;
 				fixed4 background = tex2D(_MainTex, uv);
 				// background = dither8x8(uv * _ScreenParams.xy, background);
-				uv.y = 1.0 - uv.y;
+				// uv.y = 1.0 - uv.y;
 				fixed4 ui = tex2D(_UITexture, uv);
 				fixed4 items = lerp(tex2D(_ItemsTexture, uv), tex2D(_ItemsNextTexture, uv), _InterpolationRatio);
 				fixed4 color = lerp(background, items, items.a);
