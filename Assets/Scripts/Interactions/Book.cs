@@ -12,6 +12,10 @@ public class Book : Interaction {
 			Hide();
 			Disable();
 		}
+		if (nextPage != null) {
+			nextPage.Hide();
+			nextPage.Disable();
+		}
 	}
 
 	public override void Interact () {

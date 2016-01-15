@@ -41,7 +41,7 @@ public class Player : MonoBehaviour {
 
 			if (interaction != null) {
 
-				bool click = Input.GetMouseButtonDown(0);
+				bool click = Input.GetMouseButtonDown(0) || Input.GetMouseButtonDown(0);
 
 				// Gate
 				if (interaction.GetType() == typeof(Gate)) {
