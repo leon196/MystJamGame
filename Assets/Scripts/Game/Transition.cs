@@ -26,7 +26,7 @@ public class Transition : MonoBehaviour {
 		filterEquirectangle = GameObject.FindObjectOfType<FilterEquirectangle>();
 
 		Shader.SetGlobalFloat("_InterpolationRatio", 0f);
-		Shader.SetGlobalFloat("_IsUniverseTransition", 0f);
+		Shader.SetGlobalFloat("_IsSphereTransition", 0f);
 		Shader.SetGlobalVector("_HoleDirection", Vector3.up);
 	}
 
@@ -57,7 +57,7 @@ public class Transition : MonoBehaviour {
 			Shader.SetGlobalFloat("_InterpolationRatio", 0f);
 
 			bool isUniverseTransition = gate.transitionType == Gate.TransitionType.Sphere;
-			Shader.SetGlobalFloat("_IsUniverseTransition", isUniverseTransition ? 1f : 0f);
+			Shader.SetGlobalFloat("_IsSphereTransition", isUniverseTransition ? 1f : 0f);
 
 			ui.cameraItemsTransition.transform.position = world.transform.position;
 			ui.cameraItemsTransition.transform.rotation = Camera.main.transform.rotation;
@@ -84,7 +84,7 @@ public class Transition : MonoBehaviour {
 			transitionRatio = 0f;
 			transitionTime = 0f;
 			Shader.SetGlobalFloat("_InterpolationRatio", 0f);
-			Shader.SetGlobalFloat("_IsUniverseTransition", 0f);
+			Shader.SetGlobalFloat("_IsSphereTransition", 0f);
 
 			player.currentWorld.CloseAll();
 			player.currentWorld = world;
@@ -111,7 +111,7 @@ public class Transition : MonoBehaviour {
 			Shader.SetGlobalVector("_HoleDirection", -Camera.main.transform.forward);
 			Shader.SetGlobalTexture("_Cubemap", world.cubemap);
 			Shader.SetGlobalFloat("_InterpolationRatio", 0f);
-			Shader.SetGlobalFloat("_IsUniverseTransition", 0f);
+			Shader.SetGlobalFloat("_IsSphereTransition", 0f);
 			Shader.SetGlobalTexture("_Equirectangle", portal.equirectangle);
 
 			ui.cameraItemsTransition.transform.position = world.transform.position;

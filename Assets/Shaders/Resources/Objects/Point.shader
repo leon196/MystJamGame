@@ -29,7 +29,7 @@ Shader "Unlit/Point" {
 			sampler2D _MainTex;
 			float4 _MainTex_ST;
 			float3 _HoleDirection;
-			float _IsUniverseTransition;
+			float _IsSphereTransition;
 			float _InterpolationRatio;
  
 			v2f vert(appdata input) 
@@ -50,7 +50,7 @@ Shader "Unlit/Point" {
         ratio = step(ratio, _InterpolationRatio);
 
         // Select between fade in/out transition and sphere transition
-        ratio = lerp(_InterpolationRatio, ratio, _IsUniverseTransition);
+        ratio = lerp(_InterpolationRatio, ratio, _IsSphereTransition);
 
 				fixed4 col = tex2D(_MainTex, i.uv);
 				col.a *= 1. - ratio;

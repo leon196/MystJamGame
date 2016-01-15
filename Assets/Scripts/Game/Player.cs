@@ -131,6 +131,7 @@ public class Player : MonoBehaviour {
 								Page page = (Page)interaction;
 								StartCoroutine(page.Attach(Camera.main.transform));
 								sound.PlaySoundPage();
+								mouseLook.Zoom(80f);
 							}
 						// Not close enough of page
 						} else {

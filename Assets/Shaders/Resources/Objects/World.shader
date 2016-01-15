@@ -21,7 +21,7 @@ Shader "Unlit/World" {
          samplerCUBE _Cube;   
          samplerCUBE _NextCube;   
          float _InterpolationRatio;   
-         float _IsUniverseTransition;   
+         float _IsSphereTransition;   
          float _Rotation;   
          float _RotationNext;   
          float3 _HoleDirection;   
@@ -56,7 +56,7 @@ Shader "Unlit/World" {
             // ratio = step(ratio, 0.5);
 
             // Select between fade in/out transition and sphere transition
-            ratio = lerp(_InterpolationRatio, ratio, _IsUniverseTransition);
+            ratio = lerp(_InterpolationRatio, ratio, _IsSphereTransition);
 
             float3 normal = input.normal;//input.viewDir;
             float4 current = texCUBE(_Cube, rotateY(normal, _Rotation * PI / 180.));

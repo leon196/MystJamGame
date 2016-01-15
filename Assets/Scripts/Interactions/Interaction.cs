@@ -12,6 +12,8 @@ public class Interaction : MonoBehaviour {
 
 	void Awake () 
 	{
+		gameObject.layer = 8; // Items
+
 		gateArray = GetComponentsInChildren<Gate>();
 
 		render = GetComponent<Renderer>();

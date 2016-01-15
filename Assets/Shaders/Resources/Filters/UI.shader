@@ -25,7 +25,7 @@ Shader "Hidden/UI" {
 				// uv.y = 1.0 - uv.y;
 				fixed4 ui = tex2D(_UITexture, uv);
 				fixed4 items = lerp(tex2D(_ItemsTexture, uv), tex2D(_ItemsNextTexture, uv), _InterpolationRatio);
-				fixed4 color = lerp(background, items, items.a);
+				fixed4 color = lerp(background, items, items.a);//step(0.0, Luminance(items)));
 				color = lerp(color, ui, ui.a);
 				// color = clamp(color + ui, 0., 1.);
 				// fixed4 color = clamp(background + ui, 0., 1.);

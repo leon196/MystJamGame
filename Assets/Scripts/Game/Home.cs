@@ -8,7 +8,7 @@ public class Home : World {
 	static List<Transform> tresorList;
 	static int tresorCount = 0;
 
-	void Awake ()
+	void Start ()
 	{
 		instance = this;
 		tresorList = new List<Transform>();

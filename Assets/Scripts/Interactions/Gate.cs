@@ -4,7 +4,7 @@ using System.Collections;
 public class Gate : Interaction {
 
 	public Gate anotherGate;
-	public enum TransitionType { Fade, Sphere, Fall };
+	public enum TransitionType { Fade, Sphere, Fall, Tornado };
 	public TransitionType transitionType = TransitionType.Fade;
 
 	void Start () {

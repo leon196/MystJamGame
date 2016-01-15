@@ -4,6 +4,7 @@
 	{
 		_MainTex ("Texture", 2D) = "white" {}
 		_Alpha ("Alpha", Range(0,1)) = 1
+		_HideRatio ("HideRatio", Range(0,1)) = 1
 	}
 	SubShader
 	{
@@ -38,8 +39,9 @@
 			float4 _MainTex_ST;
 			float _InterpolationRatio;
 			float3 _HoleDirection;
-			float _IsUniverseTransition;
+			float _IsSphereTransition;
 			float _Alpha;
+			float _HideRatio;
  
 			v2f vert(appdata input) 
 			{
@@ -59,9 +61,10 @@
         ratio = step(ratio, _InterpolationRatio);
 
         // Select between fade in/out transition and sphere transition
-        ratio = lerp(dentDeScie(_InterpolationRatio), ratio, _IsUniverseTransition);
+        ratio = lerp(dentDeScie(_InterpolationRatio), ratio, _IsSphereTransition);
 
 				fixed4 col = tex2D(_MainTex, i.uv);
+				col.rgba *= _HideRatio;
 				col.a *= 1. - ratio;
 				col.a *= _Alpha;
 				return col;
