@@ -1,42 +1,42 @@
-﻿using UnityEngine;
+using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 public class Page : Interaction {
 
-	public bool isRootPage = false;
-	public Interaction nextPage;
+	bool taken = false;
 
-	void Start ()
-	{
-		if (!isRootPage) {
-			Hide();
-			Disable();
-		}
-	}
-
-	public override void Interact () {
-		Disable();
+	public IEnumerator Attach (Transform parent) {
 		
-		if (nextPage) {
-			nextPage.Show();
-			nextPage.Enable();
-		}
-	}
+		if (taken == false) {
+			taken = true;
 
-	public void Close () {
-		if (isRootPage == false) {
-			Hide();
 			Disable();
+
+			transform.parent = parent;
+			Vector3 posFrom = transform.position;
+			Vector3 posTo = Camera.main.transform.position;
+			Quaternion rotFrom = transform.localRotation;
+			Quaternion rotTo = Quaternion.Euler(Vector3.up * 180f);
+			Material material = GetComponent<Renderer>().material;
+
+			float timeElapsed = 0f;
+			float duration = 1f;
+			float ratio = 0f;
+			while (timeElapsed < duration) {
+				ratio = Mathf.Clamp(timeElapsed / duration, 0f, 1f);
+				transform.position = Vector3.Slerp(posFrom, posTo, ratio);
+				transform.localRotation = Quaternion.Slerp(rotFrom, rotTo, ratio);
+				material.SetFloat("_Alpha", 1f - Mathf.Max(0f, ratio - 0.75f) * 4f);
+				timeElapsed += Time.deltaTime;
+				yield return 0;
+			}
+
+			Home.AddToCollection(this.transform);
+			material.SetFloat("_Alpha", 1f);
+
 		} else {
-			Show();
-			Enable();
+			yield return 0;
 		}
 	}
-
-  void OnDrawGizmos() {
-  	if (nextPage) {
-	  	Gizmos.color = Color.green;
-	  	Gizmos.DrawLine(transform.position, nextPage.transform.position);
-	  }
-  }
 }

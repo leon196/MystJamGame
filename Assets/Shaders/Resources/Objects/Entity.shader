@@ -3,6 +3,7 @@
 	Properties
 	{
 		_MainTex ("Texture", 2D) = "white" {}
+		_Alpha ("Alpha", Range(0,1)) = 1
 	}
 	SubShader
 	{
@@ -38,6 +39,7 @@
 			float _InterpolationRatio;
 			float3 _HoleDirection;
 			float _IsUniverseTransition;
+			float _Alpha;
  
 			v2f vert(appdata input) 
 			{
@@ -61,6 +63,7 @@
 
 				fixed4 col = tex2D(_MainTex, i.uv);
 				col.a *= 1. - ratio;
+				col.a *= _Alpha;
 				return col;
 			}
 			ENDCG

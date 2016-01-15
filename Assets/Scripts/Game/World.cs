@@ -7,7 +7,7 @@ public class World : MonoBehaviour {
 	[HideInInspector]public Cubemap cubemap;
 	[HideInInspector] public float rotation = 0f;
 	Renderer[] rendererArray;
-	Page[] pageArray;
+	Book[] bookArray;
 
 	void Awake () 
 	{
@@ -15,7 +15,7 @@ public class World : MonoBehaviour {
 		cubemap = (Cubemap)material.GetTexture("_Cube");
 		rendererArray = GetComponentsInChildren<Renderer>();
 		rotation = material.GetFloat("_Rotation");
-		pageArray = GetComponentsInChildren<Page>();
+		bookArray = GetComponentsInChildren<Book>();
 	}
 	
 	void Update () {
@@ -40,9 +40,9 @@ public class World : MonoBehaviour {
 	}
 
 	public void CloseAll () {
-		for (int i = 0; i < pageArray.Length; ++i) {
-			Page page = pageArray[i];
-			page.Close();
+		for (int i = 0; i < bookArray.Length; ++i) {
+			Book book = bookArray[i];
+			book.Close();
 		}
 	}
 }

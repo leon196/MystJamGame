@@ -58,7 +58,7 @@ public class Interface : MonoBehaviour {
 		List<Vector3> positionList = new List<Vector3>();
 		for (int i = 0; i < gateArray.Length; ++i) {
 			Gate gate = gateArray[i];
-			if (gate.anotherGate != null && gate.GetComponent<Page>() == null && gate.GetComponent<Portal>() == null) {
+			if (gate.anotherGate != null && gate.GetComponent<Book>() == null && gate.GetComponent<Portal>() == null) {
 				positionList.Add(gate.transform.position);
 			}
 		}

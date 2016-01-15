@@ -41,7 +41,7 @@ public class Player : MonoBehaviour {
 
 			if (interaction != null) {
 
-				bool click = Input.GetMouseButtonDown(0);
+				bool click = Input.GetMouseButton(0);
 
 				// Close enough of interaction
 				// if (Camera.main.fieldOfView < mouseLook.maxFOV / 2f) {
@@ -102,6 +102,25 @@ public class Player : MonoBehaviour {
 							}
 						} 
 
+					// Book
+					} else if (interaction.GetType() == typeof(Book)) {
+						// Close enough of book
+						if (Camera.main.fieldOfView < mouseLook.maxFOV / 2f) {
+							ui.SetCursorType(Interface.CursorType.Use);
+							// Click on book
+							if (click) {
+								interaction.Interact();
+								sound.PlaySoundPage();
+							}
+						// Not close enough of book
+						} else {
+							ui.SetCursorType(Interface.CursorType.Plus);
+							// Zoom
+							if (click) {
+								mouseLook.Zoom(40f);
+							}
+						}
+
 					// Page
 					} else if (interaction.GetType() == typeof(Page)) {
 						// Close enough of page
@@ -109,7 +128,8 @@ public class Player : MonoBehaviour {
 							ui.SetCursorType(Interface.CursorType.Use);
 							// Click on page
 							if (click) {
-								interaction.Interact();
+								Page page = (Page)interaction;
+								StartCoroutine(page.Attach(Camera.main.transform));
 								sound.PlaySoundPage();
 							}
 						// Not close enough of page
@@ -120,6 +140,7 @@ public class Player : MonoBehaviour {
 								mouseLook.Zoom(40f);
 							}
 						}
+
 					// Default
 					} else {
 						ui.SetCursorType(Interface.CursorType.Use);
