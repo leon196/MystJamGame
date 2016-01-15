@@ -37,6 +37,8 @@ public class World : MonoBehaviour {
 	public void SetupMaterial (World world) {
 		material.SetTexture("_NextCube", world.cubemap);
 		material.SetFloat("_RotationNext", world.rotation);
+		world.material.SetTexture("_NextCube", world.cubemap);
+		world.material.SetFloat("_RotationNext", world.rotation);
 	}
 
 	public void CloseAll () {

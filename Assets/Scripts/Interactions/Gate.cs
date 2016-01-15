@@ -4,6 +4,9 @@ using System.Collections;
 public class Gate : Interaction {
 
 	public Gate anotherGate;
+	public World anotherWorld;
+	public Texture equirectangle;
+	
 	public enum TransitionType { Fade, Sphere, Fall, Tornado };
 	public TransitionType transitionType = TransitionType.Fade;
 

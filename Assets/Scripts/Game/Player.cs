@@ -41,120 +41,84 @@ public class Player : MonoBehaviour {
 
 			if (interaction != null) {
 
-				bool click = Input.GetMouseButton(0);
+				bool click = Input.GetMouseButtonDown(0);
 
-				// Close enough of interaction
-				// if (Camera.main.fieldOfView < mouseLook.maxFOV / 2f) {
+				// Gate
+				if (interaction.GetType() == typeof(Gate)) {
+					Gate gate = (Gate)interaction;
 
-					// Portal
-					if (interaction.GetType() == typeof(Portal)) {
-
-						// Close enough of portal
-						if (Camera.main.fieldOfView < mouseLook.maxFOV / 2f) {
-							Portal portal = (Portal)interaction;
-							if (portal.transitionType == Gate.TransitionType.Sphere) {
-								ui.SetCursorType(Interface.CursorType.Lock);
-							} else {
-								ui.SetCursorType(Interface.CursorType.Portal);
-							}
-							// Click on Portal
-							if (click) {
-								StartCoroutine(transition.Fall(portal));
-								// sound.PlaySoundPortal();
-							}
-						// Not close enough of portal
-						} else {
-							if (click) {
-								mouseLook.Zoom(30f);
-							}
-							ui.SetCursorType(Interface.CursorType.Plus);
+					// Not close enough of gate
+					if (gate.transitionType != Gate.TransitionType.Fade && Camera.main.fieldOfView > mouseLook.maxFOV / 2f) {
+						ui.SetCursorType(Interface.CursorType.Plus);
+						if (click) { 
+							mouseLook.Zoom(40f); 
 						}
 
-					// Gate
-					} else if (interaction.GetType() == typeof(Gate)) {
-						Gate gate = (Gate)interaction;
+					// Close enough of gate
+					} else if (gate.isEnabled && (gate.anotherGate != null || gate.anotherWorld != null)) {
 
-						// Not close enough of gate
-						if (gate.transitionType == Gate.TransitionType.Sphere && Camera.main.fieldOfView > mouseLook.maxFOV / 2f) {
-							ui.SetCursorType(Interface.CursorType.Plus);
-							if (click) { 
-								mouseLook.Zoom(40f); 
-							}
-
-						// Close enough of gate
-						} else {
-							// Sphere transition
-							if (gate.transitionType == Gate.TransitionType.Sphere) {
-								ui.SetCursorType(Interface.CursorType.Lock);
-							} else {
-								ui.SetCursorType(Interface.CursorType.Step);
-							}
-
-							// Click on Gate
-							if (click) {
-								StartCoroutine(transition.Goto(gate));
-								// Sound
-								if (gate.transitionType == Gate.TransitionType.Sphere) {
-									sound.PlaySoundPortal();
-								} else {
-									sound.PlaySoundStep();
-								}
-							}
-						} 
-
-					// Book
-					} else if (interaction.GetType() == typeof(Book)) {
-						// Close enough of book
-						if (Camera.main.fieldOfView < mouseLook.maxFOV / 2f) {
-							ui.SetCursorType(Interface.CursorType.Use);
-							// Click on book
-							if (click) {
-								interaction.Interact();
-								sound.PlaySoundPage();
-							}
-						// Not close enough of book
-						} else {
-							ui.SetCursorType(Interface.CursorType.Plus);
-							// Zoom
-							if (click) {
-								mouseLook.Zoom(40f);
-							}
+						// Sphere transition
+						switch (gate.transitionType) {
+							case Gate.TransitionType.Fall : ui.SetCursorType(Interface.CursorType.Portal); break;
+							case Gate.TransitionType.Sphere : ui.SetCursorType(Interface.CursorType.Lock); break;
+							default : ui.SetCursorType(Interface.CursorType.Step); break;
 						}
 
-					// Page
-					} else if (interaction.GetType() == typeof(Page)) {
-						// Close enough of page
-						if (Camera.main.fieldOfView < mouseLook.maxFOV / 2f) {
-							ui.SetCursorType(Interface.CursorType.Use);
-							// Click on page
-							if (click) {
-								Page page = (Page)interaction;
-								StartCoroutine(page.Attach(Camera.main.transform));
-								sound.PlaySoundPage();
-								mouseLook.Zoom(80f);
-							}
-						// Not close enough of page
-						} else {
-							ui.SetCursorType(Interface.CursorType.Plus);
-							// Zoom
-							if (click) {
-								mouseLook.Zoom(40f);
+						// Click on Gate
+						if (click) {
+							StartCoroutine(transition.Goto(gate));
+
+							switch (gate.transitionType) {
+								case Gate.TransitionType.Sphere : sound.PlaySoundPortal(); break;
+								case Gate.TransitionType.Fade : sound.PlaySoundStep(); break;
 							}
 						}
+					} 
 
-					// Default
-					} else {
+				// Book
+				} else if (interaction.GetType() == typeof(Book)) {
+					// Close enough of book
+					if (Camera.main.fieldOfView < mouseLook.maxFOV / 2f) {
 						ui.SetCursorType(Interface.CursorType.Use);
+						// Click on book
+						if (click) {
+							interaction.Interact();
+							sound.PlaySoundPage();
+						}
+					// Not close enough of book
+					} else {
+						ui.SetCursorType(Interface.CursorType.Plus);
+						// Zoom
+						if (click) {
+							mouseLook.Zoom(40f);
+						}
 					}
 
-				// Not close enough of interaction
-				// } else {
-				// 	ui.SetCursorType(Interface.CursorType.Look);
-					// Click to Zoom
-				// 	if (click) {
-				// 		mouseLook.Zoom();
-				// 	}
-				// }
+				// Page
+				} else if (interaction.GetType() == typeof(Page)) {
+					// Close enough of page
+					if (Camera.main.fieldOfView < mouseLook.maxFOV / 2f) {
+						ui.SetCursorType(Interface.CursorType.Use);
+						// Click on page
+						if (click) {
+							Page page = (Page)interaction;
+							StartCoroutine(page.Attach(Camera.main.transform));
+							sound.PlaySoundPage();
+							mouseLook.Zoom(80f);
+						}
+					// Not close enough of page
+					} else {
+						ui.SetCursorType(Interface.CursorType.Plus);
+						// Zoom
+						if (click) {
+							mouseLook.Zoom(40f);
+						}
+					}
+
+				// Default
+				} else {
+					ui.SetCursorType(Interface.CursorType.Use);
+				}
 
 			// No interaction
 			} else {

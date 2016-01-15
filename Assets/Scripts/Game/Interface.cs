@@ -22,11 +22,9 @@ public class Interface : MonoBehaviour {
 
 	MouseLook mouseLook;
 	public Camera cameraUI;
-	public Camera cameraItems;
-	public Camera cameraItemsTransition;
+	public Camera cameraNextPanorama;
 	RenderTexture textureUI;
-	RenderTexture textureItems;
-	RenderTexture textureItemsTransition;
+	RenderTexture textureNextPanorama;
 
 	void Start () 
 	{
@@ -37,15 +35,10 @@ public class Interface : MonoBehaviour {
 		cameraUI.targetTexture = textureUI;
 		Shader.SetGlobalTexture("_UITexture", textureUI);
 
-		textureItems = new RenderTexture((int)Screen.width, (int)Screen.height, 24, RenderTextureFormat.ARGB32);
-		textureItems.Create();
-		cameraItems.targetTexture = textureItems;
-		Shader.SetGlobalTexture("_ItemsTexture", textureItems);
-
-		textureItemsTransition = new RenderTexture((int)Screen.width, (int)Screen.height, 24, RenderTextureFormat.ARGB32);
-		textureItemsTransition.Create();
-		cameraItemsTransition.targetTexture = textureItemsTransition;
-		Shader.SetGlobalTexture("_ItemsNextTexture", textureItemsTransition);
+		textureNextPanorama = new RenderTexture((int)Screen.width, (int)Screen.height, 24, RenderTextureFormat.ARGB32);
+		textureNextPanorama.Create();
+		cameraNextPanorama.targetTexture = textureNextPanorama;
+		Shader.SetGlobalTexture("_PanoramaNextTexture", textureNextPanorama);
 		
 		textureNone = new Texture2D(1, 1);
 		textureNone.SetPixel(0, 0, new Color(1,0,0,0));
@@ -58,7 +51,7 @@ public class Interface : MonoBehaviour {
 		List<Vector3> positionList = new List<Vector3>();
 		for (int i = 0; i < gateArray.Length; ++i) {
 			Gate gate = gateArray[i];
-			if (gate.anotherGate != null && gate.GetComponent<Book>() == null && gate.GetComponent<Portal>() == null) {
+			if (gate.anotherGate != null && gate.transitionType == Gate.TransitionType.Fade) {
 				positionList.Add(gate.transform.position);
 			}
 		}
@@ -70,8 +63,8 @@ public class Interface : MonoBehaviour {
 	{
 		float fovRatio = (Camera.main.fieldOfView - mouseLook.minFOV) / mouseLook.maxFOV;
 		fovRatio = 1.5f * Mathf.Clamp(fovRatio, 0.05f, 1f);
-		if (cameraItems) {
-			cameraItems.fieldOfView = Camera.main.fieldOfView;
+		if (cameraNextPanorama) {
+			cameraNextPanorama.fieldOfView = Camera.main.fieldOfView;
 		}
 	}
 	

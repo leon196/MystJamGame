@@ -56,17 +56,21 @@
 			
 			fixed4 frag (v2f i) : SV_Target
 			{
+				fixed4 col = tex2D(_MainTex, i.uv);
+
         // Sphere transition
         float ratio = dot(normalize(i.viewDir), _HoleDirection) * 0.5 + 0.5;
         ratio = step(ratio, _InterpolationRatio);
+				
+				// for level design
+				col.rgba *= _HideRatio;
 
         // Select between fade in/out transition and sphere transition
-        ratio = lerp(dentDeScie(_InterpolationRatio), ratio, _IsSphereTransition);
+				col.a *= lerp(1., 1. - ratio, _IsSphereTransition);
 
-				fixed4 col = tex2D(_MainTex, i.uv);
-				col.rgba *= _HideRatio;
-				col.a *= 1. - ratio;
+				// for animation
 				col.a *= _Alpha;
+
 				return col;
 			}
 			ENDCG

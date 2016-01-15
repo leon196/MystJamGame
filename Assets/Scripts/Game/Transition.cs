@@ -6,10 +6,9 @@ public class Transition : MonoBehaviour {
 	Player player;
 	MouseLook mouseLook;
 	Interface ui;
-
-	FilterUI filterUI;
 	FilterPlanet filterPlanet;
-	FilterEquirectangle filterEquirectangle;
+
+	Gate.TransitionType transitionType;
 
 	[HideInInspector] public bool isInTransition = false;
 	[HideInInspector] public float transitionRatio = 0f;
@@ -21,133 +20,102 @@ public class Transition : MonoBehaviour {
 		mouseLook = GameObject.FindObjectOfType<MouseLook>();
 		ui = GameObject.FindObjectOfType<Interface>();
 
-		filterUI = GameObject.FindObjectOfType<FilterUI>();
 		filterPlanet = GameObject.FindObjectOfType<FilterPlanet>();
-		filterEquirectangle = GameObject.FindObjectOfType<FilterEquirectangle>();
 
 		Shader.SetGlobalFloat("_InterpolationRatio", 0f);
 		Shader.SetGlobalFloat("_IsSphereTransition", 0f);
 		Shader.SetGlobalVector("_HoleDirection", Vector3.up);
 	}
 
-	// void Update () 
-	// {
-	// 	if (Input.GetKeyDown(KeyCode.H)) {
-	// 		Shader.SetGlobalTexture("_Cubemap", currentWorld.cubemap);
-	// 		filterEquirectangle.enabled = !filterEquirectangle.enabled;
-	// 	}
-	// }
+	void Update ()
+	{
+    if (isInTransition && transitionTime < 1f && transitionType != Gate.TransitionType.Fall) {
+      mouseLook.fieldOfView = transitionTime * 90f;
+    }
+	}
 
 	public IEnumerator Goto (Gate gate) {
 
-		World world = null;
-		
-		if (gate.anotherGate) {
-			world = gate.anotherGate.GetComponentInParent<World>();
-		}
-
-		if (world != null) {
-
-			// Start
-
-			isInTransition = true;
-			player.currentWorld.SetupMaterial(world);
-			Shader.SetGlobalVector("_HoleDirection", -Camera.main.transform.forward);
-			Shader.SetGlobalTexture("_Cubemap", world.cubemap);
-			Shader.SetGlobalFloat("_InterpolationRatio", 0f);
-
-			bool isUniverseTransition = gate.transitionType == Gate.TransitionType.Sphere;
-			Shader.SetGlobalFloat("_IsSphereTransition", isUniverseTransition ? 1f : 0f);
-
-			ui.cameraItemsTransition.transform.position = world.transform.position;
-			ui.cameraItemsTransition.transform.rotation = Camera.main.transform.rotation;
-			ui.cameraItemsTransition.fieldOfView = Camera.main.fieldOfView;
-
-			// Update
-
-			transitionTime = 0;
-			float delay = isUniverseTransition ? 14f : 1f;
-
-			while (transitionTime < delay) {
-
-				transitionRatio = transitionTime / delay;
-				Shader.SetGlobalFloat("_InterpolationRatio", transitionRatio);
-				ui.cameraItemsTransition.transform.rotation = Camera.main.transform.rotation;
-				ui.cameraItemsTransition.fieldOfView = Camera.main.fieldOfView;
-
-				transitionTime += Time.deltaTime;
-				yield return 0;
+		if (gate != null) {
+			World world = null;
+			
+			if (gate.anotherGate) {
+				world = gate.anotherGate.GetComponentInParent<World>();
+			} else if (gate.anotherWorld) {
+				world = gate.anotherWorld;
 			}
 
-			// OnComplete
+			if (world != null) {
 
-			transitionRatio = 0f;
-			transitionTime = 0f;
-			Shader.SetGlobalFloat("_InterpolationRatio", 0f);
-			Shader.SetGlobalFloat("_IsSphereTransition", 0f);
+				// Start
 
-			player.currentWorld.CloseAll();
-			player.currentWorld = world;
-			player.transform.position = player.currentWorld.transform.position;
+				transitionType = gate.transitionType;
+				transitionTime = 0;
+				float delay = 1f;
 
-			isInTransition = false;
+				switch (transitionType) 
+				{
+					case Gate.TransitionType.Fall : {
+						delay = 10f;
+						filterPlanet.enabled = true;
+						Shader.SetGlobalFloat("_IsSphereTransition", 0f);
+						Shader.SetGlobalTexture("_Equirectangle", gate.equirectangle);
+						break;
+					}
+					case Gate.TransitionType.Sphere : {
+						delay = 4f;
+						Shader.SetGlobalFloat("_IsSphereTransition", 1f);
+						break;
+					}
+				}
 
-		} else {
-			yield return 0;
-		}
-	}
+				isInTransition = true;
+				player.currentWorld.SetupMaterial(world);
+				Shader.SetGlobalVector("_HoleDirection", -Camera.main.transform.forward);
+				Shader.SetGlobalTexture("_Cubemap", world.cubemap);
+				Shader.SetGlobalFloat("_InterpolationRatio", 0f);
 
-	public IEnumerator Fall (Portal portal) {
-		
-		World world = portal.anotherWorld;
-		if (world != null) {
+				ui.cameraNextPanorama.transform.position = world.transform.position;
+				ui.cameraNextPanorama.transform.rotation = Camera.main.transform.rotation;
+				ui.cameraNextPanorama.fieldOfView = Camera.main.fieldOfView;
 
-			// Start
+				// Update
 
-			isInTransition = true;
-			filterPlanet.enabled = true;
+				while (transitionTime < delay) {
 
-			player.currentWorld.SetupMaterial(world);
-			Shader.SetGlobalVector("_HoleDirection", -Camera.main.transform.forward);
-			Shader.SetGlobalTexture("_Cubemap", world.cubemap);
-			Shader.SetGlobalFloat("_InterpolationRatio", 0f);
-			Shader.SetGlobalFloat("_IsSphereTransition", 0f);
-			Shader.SetGlobalTexture("_Equirectangle", portal.equirectangle);
+					transitionRatio = transitionTime / delay;
+					Shader.SetGlobalFloat("_InterpolationRatio", transitionRatio);
+					ui.cameraNextPanorama.transform.rotation = Camera.main.transform.rotation;
+					ui.cameraNextPanorama.fieldOfView = Camera.main.fieldOfView;
 
-			ui.cameraItemsTransition.transform.position = world.transform.position;
-			ui.cameraItemsTransition.transform.rotation = Camera.main.transform.rotation;
-			ui.cameraItemsTransition.fieldOfView = Camera.main.fieldOfView;
+					if (transitionType == Gate.TransitionType.Fall && mouseLook.fieldOfView < mouseLook.maxFOV / 2f) {
+						mouseLook.fieldOfView = 90f;
+					}
 
-			// Update
+					transitionTime += Time.deltaTime;
+					yield return 0;
+				}
 
-			transitionTime = 0;
-			float delay = 10f;
+				// OnComplete
 
-			while (transitionTime < delay) {
+				transitionRatio = 0f;
+				transitionTime = 0f;
+				Shader.SetGlobalFloat("_InterpolationRatio", 0f);
+				Shader.SetGlobalFloat("_IsSphereTransition", 0f);
 
-				transitionRatio = transitionTime / delay;
-				Shader.SetGlobalFloat("_InterpolationRatio", transitionRatio);
-				ui.cameraItemsTransition.transform.rotation = Camera.main.transform.rotation;
-				ui.cameraItemsTransition.fieldOfView = Camera.main.fieldOfView;
+				player.currentWorld.CloseAll();
+				player.currentWorld = world;
+				player.transform.position = player.currentWorld.transform.position;
 
-				transitionTime += Time.deltaTime;
+				if (transitionType == Gate.TransitionType.Fall) {
+					filterPlanet.enabled = false;
+				}
+
+				isInTransition = false;
+
+			} else {
 				yield return 0;
 			}
-
-			// OnComplete
-
-			transitionRatio = 0f;
-			transitionTime = 0f;
-			Shader.SetGlobalFloat("_InterpolationRatio", 0f);
-
-			player.currentWorld = world;
-			player.transform.position = player.currentWorld.transform.position;
-
-			filterPlanet.enabled = false;
-			isInTransition = false;
-
-		} else {
-			yield return 0;
 		}
 	}
 }
