@@ -16,7 +16,8 @@ public class Gate : Interaction {
 	public override void Interact () {
 	}
 
-  void OnDrawGizmos() {
+  void OnDrawGizmos() 
+  {
   	if (anotherGate) {
 	  	Gizmos.color = Color.red;
 	  	if (anotherGate.anotherGate) {
@@ -24,11 +25,14 @@ public class Gate : Interaction {
   		} else {
 	  		Gizmos.DrawLine(transform.position, anotherGate.transform.position);
   		}
-	  	// Gizmos.color = Color.blue;
-	  	// Gizmos.DrawLine(midPos, anotherGate.transform.position);
-	  } else {
+
+		} else if (anotherWorld) {
+			Gizmos.color = Color.green;
+			Gizmos.DrawLine(transform.position, anotherWorld.transform.position);
+
+		} else {
 	  	Gizmos.color = Color.blue;
 	  }
 	  Gizmos.DrawWireSphere(transform.position, transform.localScale.x * 0.2f);
-  }
+	}
 }
