@@ -5,7 +5,6 @@ using System.Collections.Generic;
 public class Home : World {
 
 	static Home instance;
-	static BoidManager boidManager;
 	static List<Transform> pageList;
 	static List<Transform> statueList;
 	static int pageCount = 0;
@@ -18,7 +17,6 @@ public class Home : World {
 		statueList = new List<Transform>();
 		pageCount = GameObject.FindObjectsOfType<Page>().Length;
 		statueCount = GameObject.FindObjectsOfType<Statue>().Length;
-		boidManager = GetComponent<BoidManager>();
 	}
 
 	static public void AddToCollection (Transform page)
@@ -31,7 +29,6 @@ public class Home : World {
 		page.localPosition = new Vector3(Mathf.Cos(angle) * radius, height, Mathf.Sin(angle) * radius);
 		page.LookAt(page.parent);
 		pageList.Add(page);
-		// boidManager.AddBoid(page.gameObject, Home.instance.transform.position);
 	}
 
 	static public void AddStatueToCollection (Transform statue)

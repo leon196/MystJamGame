@@ -59,7 +59,7 @@ public class Transition : MonoBehaviour {
 				switch (transitionType) 
 				{
 					case Gate.TransitionType.Fall : {
-						delay = 10f;
+						delay = 6f;
 						filterPlanet.enabled = true;
 						Shader.SetGlobalFloat("_IsSphereTransition", 0f);
 						Shader.SetGlobalTexture("_Equirectangle", gate.equirectangle);

@@ -29,7 +29,7 @@ Shader "Hidden/Planet" {
                 float ratio = _InterpolationRatio;
                 // float ratio = sin(_Time * 5.0) * 0.5 + 0.5;
                 // float ratio = 1.;//fmod(_Time * 5.0, 1.0);
-                float t = 1.0 - smoothstep(0.6, 0.9, ratio);
+                float t = 1.0 - smoothstep(0., 0.9, ratio);
                 float scale = 0.65 + easeInCirc(t, 0.0, 1.0, 1.0) * 10.0;//t * 5.0;//
                 // float scale = 1.0 + _InputDepth * 4.0;
 
@@ -41,7 +41,7 @@ Shader "Hidden/Planet" {
                 float3 sphere_pnt = float3(2. * pnt, x2y2 - 1.) / (x2y2 + 1.);
 
                 sphere_pnt = rotateY(sphere_pnt, PI);
-                float rX = smoothstep(0.6, .9, ratio);
+                float rX = smoothstep(0., .9, ratio);
                 sphere_pnt = rotateX(sphere_pnt, rX * PI * 0.5);
                 // sphere_pnt = rotateY(sphere_pnt, _InputHorizontal);
                 // sphere_pnt = rotateX(sphere_pnt, -_InputVertical);

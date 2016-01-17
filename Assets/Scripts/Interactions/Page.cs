@@ -5,6 +5,9 @@ using System.Collections.Generic;
 public class Page : Interaction {
 
 	bool taken = false;
+	
+	public override void Interact () {
+	}
 
 	public IEnumerator Attach (Transform parent) {
 		

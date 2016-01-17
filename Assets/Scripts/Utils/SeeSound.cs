@@ -17,7 +17,9 @@ public class SeeSound : MonoBehaviour
 			Gizmos.color = Color.yellow;
 			for (int i = 0; i < audioSourceArray.Length; ++i) {
 				AudioSource audioSource = audioSourceArray[i];
-				Gizmos.DrawWireSphere(audioSource.transform.position, audioSource.maxDistance);
+				if (audioSource != null) {
+					Gizmos.DrawWireSphere(audioSource.transform.position, audioSource.maxDistance);
+				}
 			}
 		}
 	}

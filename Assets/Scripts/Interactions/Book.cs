@@ -19,7 +19,8 @@ public class Book : Interaction {
 	}
 
 	public override void Interact () {
-		Disable();
+
+		base.Interact();
 		
 		if (nextPage) {
 			nextPage.Show();

@@ -10,10 +10,6 @@ public class Door : Interaction {
 	{
 		render.enabled = isOpen;
 		collision.enabled = true;
-		if (child) {
-			child.isEnabled = false;
-			child.render.enabled = false;
-		}
 	}
 
 	public override void Interact () {
@@ -24,12 +20,5 @@ public class Door : Interaction {
 			isOpen = true;
 			render.enabled = true;
 		}
-		
-		// this.Show();
-
-		// if (child) {
-		// 	child.Show();
-		// 	child.Enable();
-		// }
 	}
 }

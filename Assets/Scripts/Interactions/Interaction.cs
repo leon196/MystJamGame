@@ -5,10 +5,10 @@ using System.Collections.Generic;
 public class Interaction : MonoBehaviour {
 
 	public bool isEnabled = true;
-	Gate[] gateArray;
-	[HideInInspector] public Interaction child = null;
+	public Interaction interactionToEnable;
 	[HideInInspector] public Renderer render;
 	[HideInInspector] public Collider collision;
+	Gate[] gateArray;
 
 	void Awake () 
 	{
@@ -25,22 +25,14 @@ public class Interaction : MonoBehaviour {
 		if (collision != null) {
 			collision.enabled = this.isEnabled;
 		}
-
-		if (this.transform.childCount > 0) {
-			child = this.transform.GetChild(0).GetComponent<Interaction>();
-			if (child) {
-				child.Hide();
-				child.Disable();
-			}
-		}
 	}
 
 	public virtual void Interact () {
 		Disable();
-		
-		if (child) {
-			child.Show();
-			child.Enable();
+
+		if (interactionToEnable != null) {
+			interactionToEnable.Enable();
+			interactionToEnable.Show();
 		}
 	}
 
@@ -74,17 +66,5 @@ public class Interaction : MonoBehaviour {
 		if (render != null) {
 			render.enabled = false;
 		}
-	}
-
-	List<Interaction> GetChildren () {
-		List<Interaction> list = new List<Interaction>();
-		Interaction[] childs = GetComponentsInChildren<Interaction>();	
-		for (int i = 0; i < childs.Length; ++i) {
-			Interaction child = childs[i];
-			if (child.gameObject != this.gameObject) {
-				list.Add(child);
-			}
-		}
-		return list;
 	}
 }

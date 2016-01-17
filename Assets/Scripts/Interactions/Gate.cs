@@ -7,13 +7,18 @@ public class Gate : Interaction {
 	public World anotherWorld;
 	public Texture equirectangle;
 	
-	public enum TransitionType { Fade, Sphere, Fall, Tornado };
+	public enum TransitionType { Fade, Sphere, Fall, Jump };
 	public TransitionType transitionType = TransitionType.Fade;
 
 	void Start () {
 	}
 
 	public override void Interact () {
+
+		if (interactionToEnable != null) {
+			interactionToEnable.Enable();
+			interactionToEnable.Show();
+		}
 	}
 
   void OnDrawGizmos() 
