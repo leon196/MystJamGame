@@ -14,7 +14,7 @@ public class Voice : Sound
 	public AudioClip wow;
 
 	void Start () {
-		audioSource.volume = 0.5f;
+		// audioSource.volume = 0.5f;
 	}
 
 	public void Surprise (float delay = 0f) {

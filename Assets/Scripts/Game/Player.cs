@@ -14,12 +14,13 @@ public class Player : MonoBehaviour {
 	Transition transition;
 	FX fx;
 	Voice voice;
+	Transform audioListener;
 
 	void Start () 
 	{
 		currentWorld = spawnWorld;
 		this.transform.position = currentWorld.transform.position;
-		rayDirection = new Vector3(Input.mousePosition.x, Input.mousePosition.y, 1f);
+		rayDirection = new Vector3(0.5f, 0.5f, 1f);
 
 		ui = GetComponent<Interface>();
 		fx = GameObject.FindObjectOfType<FX>();
@@ -27,13 +28,13 @@ public class Player : MonoBehaviour {
 		
 		transition = GameObject.FindObjectOfType<Transition>();
 		mouseLook = GameObject.FindObjectOfType<MouseLook>();
+		audioListener = GameObject.FindObjectOfType<AudioListener>().transform;
 	}
 	
 	void Update () 
 	{
-		rayDirection.x = Input.mousePosition.x;
-		rayDirection.y = Input.mousePosition.y;
-		Ray ray = Camera.main.ScreenPointToRay(rayDirection);
+		audioListener.transform.rotation = Camera.main.transform.rotation;
+		Ray ray = Camera.main.ViewportPointToRay(rayDirection);
 
 		if (transition.isInTransition) {
 			ui.SetCursorType(Interface.CursorType.Load);
@@ -75,7 +76,7 @@ public class Player : MonoBehaviour {
 							switch (gate.transitionType) {
 								case Gate.TransitionType.Sphere : {
 									voice.Fear();
-									voice.Wow(13f);
+									voice.Wow(5f);
 									fx.Falling();
 									break;
 								}

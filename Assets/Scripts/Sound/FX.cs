@@ -14,7 +14,7 @@ public class FX : Sound
 	public AudioClip falling;
 
 	void Start () {
-		audioSource.volume = 0.5f;
+		audioSource.volume = 1f;
 	}
 
 	public void Step (float delay = 0f) {
