@@ -7,7 +7,7 @@ public class Gate : Interaction {
 	public World anotherWorld;
 	public Texture equirectangle;
 	
-	public enum TransitionType { Fade, Sphere, Fall, Jump };
+	public enum TransitionType { Fade, Sphere, Fall, Jump, Simple };
 	public TransitionType transitionType = TransitionType.Fade;
 
 	void Start () {

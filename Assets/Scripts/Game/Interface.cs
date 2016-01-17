@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 public class Interface : MonoBehaviour {
 
-	Renderer cursorRender;
+	public Renderer cursorRender;
 
 	public enum CursorType { None, Look, Use, Open, Step, Plus, Minus, Cancel, Load, Lock, Portal };
 	CursorType cursorType;
@@ -44,7 +44,6 @@ public class Interface : MonoBehaviour {
 		textureNone.SetPixel(0, 0, new Color(1,0,0,0));
     textureNone.Apply();
 
-		cursorRender = GetComponentInChildren<Renderer>();
 		cursorRender.material.mainTexture = textureNone;
 
 		Gate[] gateArray = GameObject.FindObjectsOfType<Gate>();

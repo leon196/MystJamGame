@@ -8,6 +8,10 @@ public class Transition : MonoBehaviour {
 	Interface ui;
 	Transform audioListener;
 	FilterPlanet filterPlanet;
+	FX fx;
+	Voice voice;
+	public Material materialTitle;
+	public Material materialThanks;
 
 	Gate.TransitionType transitionType;
 
@@ -23,6 +27,9 @@ public class Transition : MonoBehaviour {
 		audioListener = GameObject.FindObjectOfType<AudioListener>().transform;
 		filterPlanet = GameObject.FindObjectOfType<FilterPlanet>();
 
+		materialTitle.SetFloat("_Alpha", 0f);
+		materialThanks.SetFloat("_Alpha", 0f);
+
 		Shader.SetGlobalFloat("_InterpolationRatio", 0f);
 		Shader.SetGlobalFloat("_IsSphereTransition", 0f);
 		Shader.SetGlobalVector("_HoleDirection", Vector3.up);
@@ -32,9 +39,54 @@ public class Transition : MonoBehaviour {
 
 	void Update ()
 	{
-    if (isInTransition && transitionTime < 1f && transitionType != Gate.TransitionType.Fall) {
+    if (isInTransition && transitionTime < 1f && transitionType == Gate.TransitionType.Fade) {
       mouseLook.fieldOfView = transitionTime * 90f;
     }
+	}
+
+	public IEnumerator Intro (Gate gateSpawn) 
+	{
+		// Start
+
+		fx = GameObject.FindObjectOfType<FX>();
+		voice = GameObject.FindObjectOfType<Voice>();
+
+		voice.Cough();
+		yield return new WaitForSeconds(1f);
+		
+		fx.Match();
+		yield return new WaitForSeconds(3f);
+
+		// Update
+
+		float timeElapsed = 0f;
+		float timeRatio = 0f;
+		float duration = 2f;
+		while (timeElapsed < duration) {
+			timeRatio = timeElapsed / duration;
+			materialTitle.SetFloat("_Alpha", timeRatio);
+			timeElapsed += Time.deltaTime;
+			yield return 0;
+		}
+
+		yield return new WaitForSeconds(1f);
+
+		timeElapsed = 0f;
+
+		while (timeElapsed < duration) {
+			timeRatio = timeElapsed / duration;
+			materialTitle.SetFloat("_Alpha", 1f - timeRatio);
+			timeElapsed += Time.deltaTime;
+			yield return 0;
+		}
+
+		fx.BookFall();
+
+		yield return new WaitForSeconds(1f);
+
+		StartCoroutine(Goto(gateSpawn));
+
+		player.started = true;
 	}
 
 	public IEnumerator Goto (Gate gate) {
