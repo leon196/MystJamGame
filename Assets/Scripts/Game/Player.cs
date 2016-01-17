@@ -13,6 +13,7 @@ public class Player : MonoBehaviour {
 	MouseLook mouseLook;
 	Transition transition;
 	FX fx;
+	Voice voice;
 
 	void Start () 
 	{
@@ -22,6 +23,7 @@ public class Player : MonoBehaviour {
 
 		ui = GetComponent<Interface>();
 		fx = GameObject.FindObjectOfType<FX>();
+		voice = GameObject.FindObjectOfType<Voice>();
 		
 		transition = GameObject.FindObjectOfType<Transition>();
 		mouseLook = GameObject.FindObjectOfType<MouseLook>();
@@ -52,6 +54,7 @@ public class Player : MonoBehaviour {
 						ui.SetCursorType(Interface.CursorType.Plus);
 						if (click) { 
 							mouseLook.Zoom(40f); 
+        			voice.Curiosity();
 						}
 
 					// Close enough of gate
@@ -70,9 +73,19 @@ public class Player : MonoBehaviour {
 							StartCoroutine(transition.Goto(gate));
 
 							switch (gate.transitionType) {
-								case Gate.TransitionType.Sphere : fx.Falling(); break;
+								case Gate.TransitionType.Sphere : {
+									voice.Fear();
+									voice.Wow(13f);
+									fx.Falling();
+									break;
+								}
 								case Gate.TransitionType.Fade : fx.Step(); break;
-								case Gate.TransitionType.Fall : fx.Falling(); break;
+								case Gate.TransitionType.Fall : {
+									voice.Fear();
+									voice.Wow(5f);
+									fx.Falling();
+									break;
+								}
 							}
 						}
 					} 
@@ -93,6 +106,7 @@ public class Player : MonoBehaviour {
 						// Zoom
 						if (click) {
 							mouseLook.Zoom(40f);
+        			voice.Curiosity();
 						}
 					}
 
@@ -106,6 +120,7 @@ public class Player : MonoBehaviour {
 							Page page = (Page)interaction;
 							StartCoroutine(page.Attach(Camera.main.transform));
 							fx.PageTake();
+        			voice.Satisfaction();
 							mouseLook.Zoom(80f);
 						}
 					// Not close enough of page
@@ -114,6 +129,7 @@ public class Player : MonoBehaviour {
 						// Zoom
 						if (click) {
 							mouseLook.Zoom(40f);
+        			voice.Curiosity();
 						}
 					}
 

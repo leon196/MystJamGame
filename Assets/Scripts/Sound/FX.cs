@@ -13,6 +13,10 @@ public class FX : Sound
 	public AudioClip bookFall;
 	public AudioClip falling;
 
+	void Start () {
+		audioSource.volume = 0.5f;
+	}
+
 	public void Step (float delay = 0f) {
 		Play(step, delay);
 	}

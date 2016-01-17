@@ -11,36 +11,45 @@ public class Voice : Sound
 	public AudioClip cough;
 	public AudioClip sigh;
 	public AudioClip satisfaction;
+	public AudioClip wow;
 
-	public void Surprise () {
-		Play(surprise);
+	void Start () {
+		audioSource.volume = 0.5f;
 	}
 
-	public void Yawn () {
-		Play(yawn);
+	public void Surprise (float delay = 0f) {
+		Play(surprise, delay);
 	}
 
-	public void Laugh () {
-		Play(laugh);
+	public void Yawn (float delay = 0f) {
+		Play(yawn, delay);
 	}
 
-	public void Curiosity () {
-		Play(curiosity);
+	public void Laugh (float delay = 0f) {
+		Play(laugh, delay);
 	}
 
-	public void Fear () {
-		Play(fear);
+	public void Curiosity (float delay = 0f) {
+		Play(curiosity, delay);
 	}
 
-	public void Cough () {
-		Play(cough);
+	public void Fear (float delay = 0f) {
+		Play(fear, delay);
 	}
 
-	public void Sigh () {
-		Play(sigh);
+	public void Cough (float delay = 0f) {
+		Play(cough, delay);
 	}
 
-	public void Satisfaction () {
-		Play(satisfaction);
+	public void Sigh (float delay = 0f) {
+		Play(sigh, delay);
+	}
+
+	public void Satisfaction (float delay = 0f) {
+		Play(satisfaction, delay);
+	}
+
+	public void Wow (float delay = 0f) {
+		Play(wow, delay);
 	}
 }
