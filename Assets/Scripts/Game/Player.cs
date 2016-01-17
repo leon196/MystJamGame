@@ -41,11 +41,7 @@ public class Player : MonoBehaviour {
 
 			if (interaction != null) {
 
-				bool click = Input.GetMouseButtonDown(0) || Input.GetMouseButtonDown(0);
-
-				if (click) {
-					interaction.Interact();
-				}
+				bool click = Input.GetMouseButtonDown(0) || Input.GetMouseButtonDown(1);
 
 				// Gate
 				if (interaction.GetType() == typeof(Gate)) {
@@ -70,6 +66,7 @@ public class Player : MonoBehaviour {
 
 						// Click on Gate
 						if (click) {
+							gate.Interact();
 							StartCoroutine(transition.Goto(gate));
 
 							switch (gate.transitionType) {
@@ -87,6 +84,7 @@ public class Player : MonoBehaviour {
 						ui.SetCursorType(Interface.CursorType.Use);
 						// Click on book
 						if (click) {
+							interaction.Interact();
 							fx.PageTake();
 						}
 					// Not close enough of book
@@ -122,6 +120,10 @@ public class Player : MonoBehaviour {
 				// Default
 				} else {
 					ui.SetCursorType(Interface.CursorType.Use);
+
+					if (click) {
+						interaction.Interact();
+					}
 				}
 
 			// No interaction

@@ -6,7 +6,7 @@ public class SeeSound : MonoBehaviour
 {
 	AudioSource[] audioSourceArray;
 
-	void Awake ()
+	void OnEnable ()
 	{
 		audioSourceArray = GameObject.FindObjectsOfType<AudioSource>();
 	}
