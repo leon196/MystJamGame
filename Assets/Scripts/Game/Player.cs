@@ -78,14 +78,21 @@ public class Player : MonoBehaviour {
 								gate.Interact();
 								StartCoroutine(transition.Goto(gate));
 
+								if (gate.GetComponent<End>() != null) {
+									StartCoroutine(transition.Thanks());
+								}
+
 								switch (gate.transitionType) {
 									case Gate.TransitionType.Sphere : {
 										voice.Fear();
 										voice.Wow(5f);
-										fx.Falling();
+										fx.Sphering();
 										break;
 									}
-									case Gate.TransitionType.Fade : fx.Step(); break;
+									case Gate.TransitionType.Fade : {
+										fx.Step(); 
+										break;
+									}
 									case Gate.TransitionType.Fall : {
 										voice.Fear();
 										voice.Wow(5f);
@@ -104,7 +111,7 @@ public class Player : MonoBehaviour {
 							// Click on book
 							if (click) {
 								interaction.Interact();
-								fx.PageTake();
+								fx.PageSwipe();
 							}
 						// Not close enough of book
 						} else {
@@ -137,6 +144,15 @@ public class Player : MonoBehaviour {
 								mouseLook.Zoom(40f);
 	        			voice.Curiosity();
 							}
+						}
+
+					// Statue
+					} else if (interaction.GetType() == typeof(Statue)) {
+						ui.SetCursorType(Interface.CursorType.Use);
+
+						if (click) {
+							interaction.Interact();
+							fx.Catching();
 						}
 
 					// Default

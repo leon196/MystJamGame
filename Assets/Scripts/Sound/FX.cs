@@ -12,6 +12,8 @@ public class FX : Sound
 	public AudioClip bookOpen;
 	public AudioClip bookFall;
 	public AudioClip falling;
+	public AudioClip sphering;
+	public AudioClip catching;
 
 	void Start () {
 		audioSource.volume = 1f;
@@ -51,5 +53,13 @@ public class FX : Sound
 
 	public void Falling (float delay = 0f) {
 		Play(falling, delay);
+	}
+
+	public void Sphering (float delay = 0f) {
+		Play(sphering, delay);
+	}
+
+	public void Catching (float delay = 0f) {
+		Play(catching, delay);
 	}
 }

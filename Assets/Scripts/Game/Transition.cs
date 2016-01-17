@@ -39,7 +39,9 @@ public class Transition : MonoBehaviour {
 
 	void Update ()
 	{
-    if (isInTransition && transitionTime < 1f && transitionType == Gate.TransitionType.Fade) {
+    if (isInTransition && transitionTime < 1f 
+    	&& transitionType != Gate.TransitionType.Fall 
+    	&& transitionType != Gate.TransitionType.Simple) {
       mouseLook.fieldOfView = transitionTime * 90f;
     }
 	}
@@ -118,7 +120,7 @@ public class Transition : MonoBehaviour {
 						break;
 					}
 					case Gate.TransitionType.Sphere : {
-						delay = 10f;
+						delay = 14f;
 						Shader.SetGlobalFloat("_IsSphereTransition", 1f);
 						break;
 					}
@@ -176,6 +178,35 @@ public class Transition : MonoBehaviour {
 			} else {
 				yield return 0;
 			}
+		}
+	}
+
+	public IEnumerator Thanks () 
+	{
+		fx = GameObject.FindObjectOfType<FX>();
+		fx.PageTake();
+
+		// Update
+
+		float timeElapsed = 0f;
+		float timeRatio = 0f;
+		float duration = 2f;
+		while (timeElapsed < duration) {
+			timeRatio = timeElapsed / duration;
+			materialThanks.SetFloat("_Alpha", timeRatio);
+			timeElapsed += Time.deltaTime;
+			yield return 0;
+		}
+
+		yield return new WaitForSeconds(1f);
+
+		timeElapsed = 0f;
+
+		while (timeElapsed < duration) {
+			timeRatio = timeElapsed / duration;
+			materialThanks.SetFloat("_Alpha", 1f - timeRatio);
+			timeElapsed += Time.deltaTime;
+			yield return 0;
 		}
 	}
 }
