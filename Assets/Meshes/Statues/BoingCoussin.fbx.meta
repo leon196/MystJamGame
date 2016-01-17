@@ -1,0 +1,147 @@
+fileFormatVersion: 2
+guid: 5c5301007a7a12f40a3e0f6b77ee6718
+timeCreated: 1453066361
+licenseType: Free
+ModelImporter:
+  serializedVersion: 19
+  fileIDToRecycleName:
+    100000: Boing_MeshPart0
+    100002: Boing_MeshPart1
+    100004: Boing_MeshPart2
+    100006: Boing_MeshPart3
+    100008: Boing_MeshPart4
+    100010: Boing_MeshPart5
+    100012: //RootNode
+    100014: Boing
+    100016: Boing.001
+    100018: Boing.001_MeshPart0
+    100020: Boing.001_MeshPart1
+    100022: Boing.001_MeshPart2
+    100024: Boing.001_MeshPart3
+    100026: Boing.001_MeshPart4
+    100028: Boing.001_MeshPart5
+    100030: Boing.001_MeshPart6
+    100032: Boing.001_MeshPart7
+    400000: Boing_MeshPart0
+    400002: Boing_MeshPart1
+    400004: Boing_MeshPart2
+    400006: Boing_MeshPart3
+    400008: Boing_MeshPart4
+    400010: Boing_MeshPart5
+    400012: //RootNode
+    400014: Boing
+    400016: Boing.001
+    400018: Boing.001_MeshPart0
+    400020: Boing.001_MeshPart1
+    400022: Boing.001_MeshPart2
+    400024: Boing.001_MeshPart3
+    400026: Boing.001_MeshPart4
+    400028: Boing.001_MeshPart5
+    400030: Boing.001_MeshPart6
+    400032: Boing.001_MeshPart7
+    2300000: Boing_MeshPart0
+    2300002: Boing_MeshPart1
+    2300004: Boing_MeshPart2
+    2300006: Boing_MeshPart3
+    2300008: Boing_MeshPart4
+    2300010: Boing_MeshPart5
+    2300012: Boing.001_MeshPart0
+    2300014: Boing.001_MeshPart1
+    2300016: Boing.001_MeshPart2
+    2300018: Boing.001_MeshPart3
+    2300020: Boing.001_MeshPart4
+    2300022: Boing.001_MeshPart5
+    2300024: Boing.001_MeshPart6
+    2300026: Boing.001_MeshPart7
+    3300000: Boing_MeshPart0
+    3300002: Boing_MeshPart1
+    3300004: Boing_MeshPart2
+    3300006: Boing_MeshPart3
+    3300008: Boing_MeshPart4
+    3300010: Boing_MeshPart5
+    3300012: Boing.001_MeshPart0
+    3300014: Boing.001_MeshPart1
+    3300016: Boing.001_MeshPart2
+    3300018: Boing.001_MeshPart3
+    3300020: Boing.001_MeshPart4
+    3300022: Boing.001_MeshPart5
+    3300024: Boing.001_MeshPart6
+    3300026: Boing.001_MeshPart7
+    4300000: Boing_MeshPart0
+    4300002: Boing_MeshPart1
+    4300004: Boing_MeshPart2
+    4300006: Boing_MeshPart3
+    4300008: Boing_MeshPart4
+    4300010: Boing_MeshPart5
+    4300012: Boing.001_MeshPart0
+    4300014: Boing.001_MeshPart1
+    4300016: Boing.001_MeshPart2
+    4300018: Boing.001_MeshPart3
+    4300020: Boing.001_MeshPart4
+    4300022: Boing.001_MeshPart5
+    4300024: Boing.001_MeshPart6
+    4300026: Boing.001_MeshPart7
+  materials:
+    importMaterials: 1
+    materialName: 0
+    materialSearch: 1
+  animations:
+    legacyGenerateAnimations: 4
+    bakeSimulation: 0
+    resampleRotations: 1
+    optimizeGameObjects: 0
+    motionNodeName: 
+    animationImportErrors: 
+    animationImportWarnings: 
+    animationRetargetingWarnings: 
+    animationDoRetargetingWarnings: 0
+    animationCompression: 1
+    animationRotationError: 0.5
+    animationPositionError: 0.5
+    animationScaleError: 0.5
+    animationWrapMode: 0
+    extraExposedTransformPaths: []
+    clipAnimations: []
+    isReadable: 1
+  meshes:
+    lODScreenPercentages: []
+    globalScale: 10
+    meshCompression: 0
+    addColliders: 0
+    importBlendShapes: 1
+    swapUVChannels: 0
+    generateSecondaryUV: 0
+    useFileUnits: 1
+    optimizeMeshForGPU: 1
+    keepQuads: 0
+    weldVertices: 1
+    secondaryUVAngleDistortion: 8
+    secondaryUVAreaDistortion: 15.000001
+    secondaryUVHardAngle: 88
+    secondaryUVPackMargin: 4
+    useFileScale: 1
+  tangentSpace:
+    normalSmoothAngle: 60
+    normalImportMode: 0
+    tangentImportMode: 3
+  importAnimation: 1
+  copyAvatar: 0
+  humanDescription:
+    human: []
+    skeleton: []
+    armTwist: 0.5
+    foreArmTwist: 0.5
+    upperLegTwist: 0.5
+    legTwist: 0.5
+    armStretch: 0.05
+    legStretch: 0.05
+    feetSpacing: 0
+    rootMotionBoneName: 
+    hasTranslationDoF: 0
+  lastHumanDescriptionAvatarSource: {instanceID: 0}
+  animationType: 0
+  humanoidOversampling: 1
+  additionalBone: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

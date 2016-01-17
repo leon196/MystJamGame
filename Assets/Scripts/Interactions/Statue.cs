@@ -61,6 +61,7 @@ public class Statue : Interaction
 
 		foreach (Material material in materialList) {
 			material.SetFloat("_TeleportationRatio", 0f);
+			materialShadow.SetFloat("_MetaRatio", 1f);
 		}
 		materialShadow.SetFloat("_Alpha", 0f);
 	}
