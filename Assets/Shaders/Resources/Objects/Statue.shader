@@ -30,14 +30,20 @@
 			UNITY_INITIALIZE_OUTPUT(Input,o);
 			o.normal = v.normal;
 
-			v.vertex.xyz = rotateY(v.vertex.xyz, _TeleportationRatio * (v.vertex.y * 100.));
-			v.vertex.xyz = lerp(v.vertex.xyz, float3(0., v.vertex.y, 0.), _TeleportationRatio);
-			v.vertex.y *= (1. + _TeleportationRatio);
+			float ratio = _TeleportationRatio;
+
+			v.vertex.xyz = rotateY(v.vertex.xyz, ratio * (v.vertex.y * 100.));
+			// v.vertex.xz *= lerp(1., 0., ratio);
+			v.vertex.xz *= lerp(1., (1. - smoothstep(0.5, 1., ratio)) / max(v.vertex.y * 100., 1.), ratio);
+			v.vertex.y *= (1. + ratio);
 		}
 
 		void surf (Input IN, inout SurfaceOutputStandard o) {
 			fixed4 c = tex2D (_MainTex, IN.uv_MainTex) * _Color;
-			o.Albedo = lerp(c.rgb, IN.normal * 0.5 + 0.5, _TeleportationRatio);
+
+			float ratio = _TeleportationRatio;
+
+			o.Albedo = lerp(c.rgb, IN.normal * 0.5 + 0.5, ratio);
 			o.Metallic = _Metallic;
 			o.Smoothness = _Glossiness;
 			o.Alpha = c.a;
