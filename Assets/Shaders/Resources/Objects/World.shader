@@ -1,4 +1,4 @@
-Shader "Unlit/World" {
+Shader "Custom/World" {
    Properties {
       _Cube ("Environment Map", Cube) = "" {}
       _Rotation ("Rotation Degree", Float) = 0

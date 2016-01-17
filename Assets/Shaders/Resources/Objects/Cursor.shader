@@ -1,4 +1,4 @@
-Shader "Unlit/Cursor" {
+Shader "Custom/Cursor" {
 	Properties {
 		_MainTex ("Current World", 2D) = "white" {}
 	}

@@ -119,6 +119,10 @@ public class Player : MonoBehaviour {
 				// Default
 				} else {
 					ui.SetCursorType(Interface.CursorType.Use);
+
+					if (click) {
+						interaction.Interact();
+					}
 				}
 
 			// No interaction

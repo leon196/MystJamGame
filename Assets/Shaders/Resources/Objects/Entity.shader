@@ -1,4 +1,4 @@
-﻿Shader "Unlit/Entity"
+﻿Shader "Custom/Entity"
 {
 	Properties
 	{

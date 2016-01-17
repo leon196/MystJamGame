@@ -1,4 +1,4 @@
-Shader "Unlit/Point" {
+Shader "Custom/Point" {
 	Properties {
 		_MainTex ("Current World", 2D) = "white" {}
 	}

@@ -1,4 +1,4 @@
-Shader "Unlit/VideoAlpha" {
+Shader "Custom/VideoAlpha" {
 	Properties {
 		_MainTex ("Texture", 2D) = "white" {}
 		_InterpolationRatio ("Interpolation Ratio", Float) = 0
