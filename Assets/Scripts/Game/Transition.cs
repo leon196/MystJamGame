@@ -66,7 +66,7 @@ public class Transition : MonoBehaviour {
 						break;
 					}
 					case Gate.TransitionType.Sphere : {
-						delay = 14f;
+						delay = 10f;
 						Shader.SetGlobalFloat("_IsSphereTransition", 1f);
 						break;
 					}
