@@ -12,7 +12,7 @@ public class Player : MonoBehaviour {
 	
 	MouseLook mouseLook;
 	Transition transition;
-	Sound sound;
+	FX fx;
 
 	void Start () 
 	{
@@ -21,10 +21,10 @@ public class Player : MonoBehaviour {
 		rayDirection = new Vector3(Input.mousePosition.x, Input.mousePosition.y);
 
 		ui = GetComponent<Interface>();
+		fx = GameObject.FindObjectOfType<FX>();
 		
 		transition = GameObject.FindObjectOfType<Transition>();
 		mouseLook = GameObject.FindObjectOfType<MouseLook>();
-		sound = GameObject.FindObjectOfType<Sound>();
 	}
 	
 	void Update () 
@@ -69,8 +69,9 @@ public class Player : MonoBehaviour {
 							StartCoroutine(transition.Goto(gate));
 
 							switch (gate.transitionType) {
-								case Gate.TransitionType.Sphere : sound.PlaySoundPortal(); break;
-								case Gate.TransitionType.Fade : sound.PlaySoundStep(); break;
+								case Gate.TransitionType.Sphere : fx.Falling(); break;
+								case Gate.TransitionType.Fade : fx.Step(); break;
+								case Gate.TransitionType.Fall : fx.Falling(6f); break;
 							}
 						}
 					} 
@@ -83,7 +84,7 @@ public class Player : MonoBehaviour {
 						// Click on book
 						if (click) {
 							interaction.Interact();
-							sound.PlaySoundPage();
+							fx.PageTake();
 						}
 					// Not close enough of book
 					} else {
@@ -103,7 +104,7 @@ public class Player : MonoBehaviour {
 						if (click) {
 							Page page = (Page)interaction;
 							StartCoroutine(page.Attach(Camera.main.transform));
-							sound.PlaySoundPage();
+							fx.PageTake();
 							mouseLook.Zoom(80f);
 						}
 					// Not close enough of page

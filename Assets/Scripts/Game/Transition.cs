@@ -6,6 +6,7 @@ public class Transition : MonoBehaviour {
 	Player player;
 	MouseLook mouseLook;
 	Interface ui;
+	Transform audioListener;
 	FilterPlanet filterPlanet;
 
 	Gate.TransitionType transitionType;
@@ -19,12 +20,14 @@ public class Transition : MonoBehaviour {
 		player = GameObject.FindObjectOfType<Player>();
 		mouseLook = GameObject.FindObjectOfType<MouseLook>();
 		ui = GameObject.FindObjectOfType<Interface>();
-
+		audioListener = GameObject.FindObjectOfType<AudioListener>().transform;
 		filterPlanet = GameObject.FindObjectOfType<FilterPlanet>();
 
 		Shader.SetGlobalFloat("_InterpolationRatio", 0f);
 		Shader.SetGlobalFloat("_IsSphereTransition", 0f);
 		Shader.SetGlobalVector("_HoleDirection", Vector3.up);
+
+		audioListener.position = player.transform.position;
 	}
 
 	void Update ()
@@ -63,7 +66,7 @@ public class Transition : MonoBehaviour {
 						break;
 					}
 					case Gate.TransitionType.Sphere : {
-						delay = 4f;
+						delay = 14f;
 						Shader.SetGlobalFloat("_IsSphereTransition", 1f);
 						break;
 					}
@@ -78,6 +81,9 @@ public class Transition : MonoBehaviour {
 				ui.cameraNextPanorama.transform.position = world.transform.position;
 				ui.cameraNextPanorama.transform.rotation = Camera.main.transform.rotation;
 				ui.cameraNextPanorama.fieldOfView = Camera.main.fieldOfView;
+		
+				Vector3 posFrom = player.transform.position;
+				Vector3 posTo = world.transform.position;
 
 				// Update
 
@@ -87,6 +93,8 @@ public class Transition : MonoBehaviour {
 					Shader.SetGlobalFloat("_InterpolationRatio", transitionRatio);
 					ui.cameraNextPanorama.transform.rotation = Camera.main.transform.rotation;
 					ui.cameraNextPanorama.fieldOfView = Camera.main.fieldOfView;
+
+					audioListener.position = Vector3.Lerp(posFrom, posTo, transitionRatio);
 
 					if (transitionType == Gate.TransitionType.Fall && mouseLook.fieldOfView < mouseLook.maxFOV / 2f) {
 						mouseLook.fieldOfView = 90f;
