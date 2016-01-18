@@ -2,6 +2,14 @@
 Game for Myst Jam (http://itch.io/jam/myst-jam)
 
 
+## Voice :
+
+- Melanie 
+
+## Music :
+
+- Gregory Semah
+
 ## Panoramas credits :
 
 ### Voyages :
